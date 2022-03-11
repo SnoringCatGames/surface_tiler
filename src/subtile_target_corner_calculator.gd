@@ -1099,6 +1099,11 @@ func get_target_top_right_corner(proximity: CellProximity) -> int:
                                 proximity.get_is_45_pos_floor(0,-2):
                                 if proximity.get_is_45_pos_ceiling(1,1) or \
                                         proximity.get_is_45_pos_ceiling(2,0):
+                                    # FIXME: LEFT OFF HERE: --------------------------
+                                    # - Check if I really need proximity.get_is_45_neg_floor(0,-2) for this.
+                                    # - And related checks.
+                                    # - Look at recent git blame.
+                                    # - This is causing interior bumps inside of exterior 45 caps.
                                     return SubtileCorner.INT_INT_EXT_90H_45_CONCAVE_INT_45_FLOOR_45_CEILING
                                 else:
                                     return SubtileCorner.INT_INT_EXT_90H_45_CONCAVE_INT_45_H_SIDE
