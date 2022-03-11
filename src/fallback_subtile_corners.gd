@@ -359,6 +359,16 @@ const FALLBACKS := {
         SubtileCorner.INT_INT_90H_45_CONCAVE: [1.0, 0.0, 0.0, 0.0],
         SubtileCorner.INT_90V_INT_45_H_SIDE: [0.0, 0.0, 0.0, 1.0],
     },
+    SubtileCorner.INT_INT_EXT_90H_45_CONCAVE_INT_INT_90V_45_CONCAVE: {
+        SubtileCorner.INT_INT_EXT_90H_45_CONCAVE: [1.0, 0.0, 1.0, 1.0],
+        SubtileCorner.INT_INT_90V_45_CONCAVE: [0.0, 1.0, 0.0, 0.0],
+        SubtileCorner.INT_90H_INT_45_V_SIDE: [0.0, 0.0, 1.0, 0.0],
+    },
+    SubtileCorner.INT_INT_EXT_90V_45_CONCAVE_INT_INT_90H_45_CONCAVE: {
+        SubtileCorner.INT_INT_EXT_90V_45_CONCAVE: [0.0, 1.0, 1.0, 1.0],
+        SubtileCorner.INT_INT_90H_45_CONCAVE: [1.0, 0.0, 0.0, 0.0],
+        SubtileCorner.INT_90V_INT_45_H_SIDE: [0.0, 0.0, 0.0, 1.0],
+    },
     
     SubtileCorner.INT_90H_INT_INT_90V_45_CONCAVE_INT_45_H_SIDE: {
         SubtileCorner.INT_90H_INT_45_H_SIDE: [1.0, 0.0, 0.0, 0.0],

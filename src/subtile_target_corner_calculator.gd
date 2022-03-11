@@ -3,7 +3,13 @@ class_name SubtileTargetCornerCalculator
 extends Node
 
 
-# FIXME: RIGGHT OFF HERE: ----------------------------------------
+# FIXME: LEFT OFF HERE: ----------------------------------------
+#    INT_INT_EXT_90H_45_CONCAVE_INT_INT_90V_45_CONCAVE,
+#    INT_INT_EXT_90V_45_CONCAVE_INT_INT_90H_45_CONCAVE,
+# 
+# 
+# 
+# 
 # - Remove a lot of the bottom internal corner-types.
 #     - And use connection annotations instead.
 #   - INT_INT_EXT_90H_45_CONCAVE_90V_45_CONCAVE_INT_45_H_SIDE

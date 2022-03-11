@@ -2,6 +2,9 @@ class_name SubtileCornerToDepth
 extends Reference
 
 
+# FIXME: LEFT OFF HERE: ------------- Remove all of the obsolete depth-based stuff?
+
+
 const CORNERS_TO_DEPTHS := {
     SubtileCorner.UNKNOWN: SubtileDepth.UNKNOWN,
     
@@ -133,6 +136,9 @@ const CORNERS_TO_DEPTHS := {
     
     SubtileCorner.INT_90H_INT_INT_90V_45_CONCAVE: SubtileDepth.EXT_INT,
     SubtileCorner.INT_90V_INT_INT_90H_45_CONCAVE: SubtileDepth.EXT_INT,
+    
+    SubtileCorner.INT_INT_EXT_90H_45_CONCAVE_INT_INT_90V_45_CONCAVE: SubtileDepth.EXT_INT,
+    SubtileCorner.INT_INT_EXT_90V_45_CONCAVE_INT_INT_90H_45_CONCAVE: SubtileDepth.EXT_INT,
     
     SubtileCorner.INT_90H_INT_INT_90V_45_CONCAVE_INT_45_H_SIDE: SubtileDepth.EXT_INT,
     SubtileCorner.INT_90V_INT_INT_90H_45_CONCAVE_INT_45_V_SIDE: SubtileDepth.EXT_INT,
