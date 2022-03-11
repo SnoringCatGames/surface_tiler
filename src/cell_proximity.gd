@@ -986,6 +986,30 @@ func get_is_45_neg_ceiling_at_right(relative_x := 0, relative_y := 0) -> bool:
     return get_is_45_neg_ceiling_at_bottom(relative_x, relative_y)
 
 
+func get_is_non_cap_45_pos_floor(relative_x := 0, relative_y := 0) -> bool:
+    return get_is_45_pos_floor(relative_x, relative_y) and \
+            get_is_present(relative_x + 1, relative_y) and \
+            get_is_present(relative_x, relative_y + 1)
+
+
+func get_is_non_cap_45_neg_floor(relative_x := 0, relative_y := 0) -> bool:
+    return get_is_45_neg_floor(relative_x, relative_y) and \
+            get_is_present(relative_x - 1, relative_y) and \
+            get_is_present(relative_x, relative_y + 1)
+
+
+func get_is_non_cap_45_pos_ceiling(relative_x := 0, relative_y := 0) -> bool:
+    return get_is_45_pos_ceiling(relative_x, relative_y) and \
+            get_is_present(relative_x - 1, relative_y) and \
+            get_is_present(relative_x, relative_y - 1)
+
+
+func get_is_non_cap_45_neg_ceiling(relative_x := 0, relative_y := 0) -> bool:
+    return get_is_45_neg_ceiling(relative_x, relative_y) and \
+            get_is_present(relative_x + 1, relative_y) and \
+            get_is_present(relative_x, relative_y - 1)
+
+
 func get_is_27_pos_floor_in_top(relative_x := 0, relative_y := 0) -> bool:
     if get_is_empty(relative_x, relative_y):
         return false
