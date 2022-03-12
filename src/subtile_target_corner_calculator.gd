@@ -3,36 +3,6 @@ class_name SubtileTargetCornerCalculator
 extends Node
 
 
-# FIXME: LEFT OFF HERE: -----------------------------------------
-#    INT_INT_EXT_90H_45_CONCAVE_INT_INT_90V_45_CONCAVE,
-#    INT_INT_EXT_90V_45_CONCAVE_INT_INT_90H_45_CONCAVE,
-# 
-# 
-# 
-# 
-# - Remove a lot of the bottom internal corner-types.
-#     - And use connection annotations instead.
-#   - INT_INT_EXT_90H_45_CONCAVE_90V_45_CONCAVE_INT_45_H_SIDE
-#   - INT_INT_EXT_90H_45_CONCAVE_90V_45_CONCAVE_INT_45_V_SIDE
-#   - INT_INT_EXT_90H_45_CONCAVE_INT_45_H_SIDE
-#   - INT_INT_EXT_90H_45_CONCAVE_INT_45_V_SIDE
-#   - INT_INT_EXT_90V_45_CONCAVE_INT_45_H_SIDE
-#   - INT_INT_EXT_90V_45_CONCAVE_INT_45_V_SIDE
-#   - INT_INT_EXT_90H_45_CONCAVE_INT_45_FLOOR_45_CEILING
-#   - INT_INT_EXT_90V_45_CONCAVE_INT_45_FLOOR_45_CEILING
-#   - INT_INT_EXT_90H_45_CONCAVE_90V_45_CONCAVE_INT_45_FLOOR_45_CEILING
-#   - ... (most others in the last column of the legend?)
-#   - 
-# - Fix the current more-glaring regressions in quadrant selections.
-# - Go through the tile-set and remove redundant quadrants.
-#   - Use the new support for explicit internal connection annotations.
-# - Actually, go back and add the separate types for the various inner 45
-#   corners with interesting joins like (like INT_90H_INT_INT_45_CLIPPED)?
-#   - This will be more logic complexity, but less ambiguity, fewer tile_set
-#     subtiles, and less work for the tile_set author.
-# - Debug all the error cases for 45-degree target-corner calculations.
-
-
 func get_target_top_left_corner(proximity: CellProximity) -> int:
     if !proximity.get_is_a_corner_match_subtile():
         return SubtileCorner.EMPTY
