@@ -2,9 +2,14 @@ tool
 extends EditorPlugin
 
 
+var corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
+
+
 func _enter_tree():
-    pass
+    var corner_match_tilemap_inspector_plugin := \
+            CornerMatchTilemapInspectorPlugin.new()
+    add_inspector_plugin(corner_match_tilemap_inspector_plugin)
 
 
 func _exit_tree():
-    pass
+    remove_inspector_plugin(corner_match_tilemap_inspector_plugin)

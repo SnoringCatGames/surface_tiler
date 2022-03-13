@@ -58,9 +58,6 @@ func _ready() -> void:
     inner_tilemap.cell_size = tile_set.get_inner_cell_size()
     
     assert(cell_size == Sc.level_session.config.cell_size)
-    
-    # TODO: This is useful when updating the tileset.
-    refresh_all_cells()
 
 
 func _enter_tree() -> void:
@@ -261,7 +258,12 @@ func _delegate_quadrant_updates(
                     quadrant_position)
 
 
-func refresh_all_cells() -> void:
+func recalculate_cells() -> void:
     for cell_position in get_used_cells():
         var tile_id := get_cellv(cell_position)
         _delegate_quadrant_updates(cell_position, tile_id)
+
+
+func reset_manual_cells() -> void:
+    # FIXME: LEFT OFF HERE: ------------------------------
+    pass
