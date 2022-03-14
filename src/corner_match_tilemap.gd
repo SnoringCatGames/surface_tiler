@@ -207,7 +207,7 @@ func _on_cell_tile_changed(
     # FIXME: --------------
     # - Trigger debug printing somewhere else (probably through a
     #   click-to-inspect mode that's toggled through the plugin UI).
-    Su.subtile_manifest.quadrant_calculator.get_quadrants(
+    St.quadrant_calculator.get_quadrants(
             cell_position,
             tile_id,
             self,
@@ -225,7 +225,7 @@ func _delegate_quadrant_updates(
         cell_position: Vector2,
         tile_id: int) -> void:
     var quadrants: Array = \
-            Su.subtile_manifest.quadrant_calculator.get_quadrants(
+            St.quadrant_calculator.get_quadrants(
                 cell_position,
                 tile_id,
                 self,

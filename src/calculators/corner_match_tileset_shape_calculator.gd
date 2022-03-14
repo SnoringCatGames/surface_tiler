@@ -171,7 +171,7 @@ func _create_shape_type_to_shapes(tileset_config: Dictionary) -> Dictionary:
             if !vertices.empty():
                 var vertices_pool := PoolVector2Array(vertices)
                 
-                if Su.subtile_manifest.forces_convex_collision_shapes or \
+                if St.forces_convex_collision_shapes or \
                         tileset_config.subtile_collision_margin == 0.0:
                     collision_shape = ConvexPolygonShape2D.new()
                     collision_shape.points = vertices_pool

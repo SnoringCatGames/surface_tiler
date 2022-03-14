@@ -217,7 +217,7 @@ static func get_shape_type_for_corner_type(
                 Sc.logger.error(
                         ("QuadrantShapeType.get_shape_type_for_corner_type: " +
                         "%s, is_opposite_corner_clipped_45=%s") % [
-                            Su.subtile_manifest \
+                            St \
                                 .get_subtile_corner_string(corner_type),
                             str(is_opposite_corner_clipped_45)
                         ])
@@ -368,7 +368,7 @@ static func get_shape_type_for_corner_type(
                 Sc.logger.error(
                         ("QuadrantShapeType.get_shape_type_for_corner_type: " +
                         "%s, is_opposite_corner_clipped_45=%s") % [
-                            Su.subtile_manifest \
+                            St \
                                 .get_subtile_corner_string(corner_type),
                             str(is_opposite_corner_clipped_45)
                         ])

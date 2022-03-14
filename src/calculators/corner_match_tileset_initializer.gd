@@ -15,13 +15,13 @@ func initialize_tileset(tileset_config: Dictionary) -> void:
             load(tileset_config.tileset_quadrants_path)
     
     var corner_type_annotation_key: Dictionary = \
-            Su.subtile_manifest.annotations_parser \
+            St.annotations_parser \
                 .parse_corner_type_annotation_key(
-                    Su.subtile_manifest.corner_type_annotation_key_path,
+                    St.corner_type_annotation_key_path,
                     tileset_config.quadrant_size)
     tile_set.corner_type_annotation_key = corner_type_annotation_key
     var subtile_corner_types: Dictionary = \
-            Su.subtile_manifest.annotations_parser \
+            St.annotations_parser \
                 .parse_tileset_corner_type_annotations(
                     tileset_config.tileset_corner_type_annotations_path,
                     tileset_config.quadrant_size,
@@ -30,7 +30,7 @@ func initialize_tileset(tileset_config: Dictionary) -> void:
     tile_set.empty_quadrants = _get_empty_quadrants(subtile_corner_types)
     tile_set.error_quadrants = _get_error_quadrants(subtile_corner_types)
     
-    var shapes: Dictionary = Su.subtile_manifest.shape_calculator \
+    var shapes: Dictionary = St.shape_calculator \
             .create_tileset_shapes(subtile_corner_types, tileset_config)
     # Dictionary<
     #   CornerDirection,
@@ -83,7 +83,7 @@ func _initialize_inner_tile(
         collision_shapes: Dictionary,
         occlusion_shapes: Dictionary,
         tileset_config: Dictionary) -> void:
-    var tile_name: String = "*" + Su.subtile_manifest.inner_autotile_name
+    var tile_name: String = "*" + St.inner_autotile_name
     
     var tile_id := tile_set.find_tile_by_name(tile_name)
     if tile_id >= 0:
@@ -138,7 +138,7 @@ func _initialize_outer_tile(
     
     var tile_name: String = \
             tile_name_prefix + \
-            Su.subtile_manifest.outer_autotile_name + \
+            St.outer_autotile_name + \
             tile_name_suffix
     
     var tile_id := tile_set.find_tile_by_name(tile_name)

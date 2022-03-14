@@ -1,6 +1,14 @@
 tool
-class_name SubtileManifest
-extends Node
+extends FrameworkConfig
+## FIXME: LEFT OFF HERE: ------------- Update docs.
+## -   This is a global singleton that defines a bunch of Surfacer
+##     parameters.[br]
+## -   All of these parameters can be configured when bootstrapping the
+##     app.[br]
+## -   You will need to provide an `app_manifest` dictionary which defines some
+##     of these parameters.[br]
+## -   Define `Su` as an AutoLoad (in Project Settings).[br]
+## -   "St" is short for "SurfaceTiler".[br]
 
 
 # TODO: Add support for:
@@ -9,6 +17,8 @@ extends Node
 # - One-way collisions
 # - Configuring z-index
 
+
+# --- Constants ---
 
 # FIXME: LEFT OFF HERE: --------------------------------
 var ACCEPTABLE_MATCH_WEIGHT_THRESHOLD := 1.0
@@ -55,7 +65,9 @@ var SUBTILE_DEPTH_TO_UNMATCHED_CORNER_WEIGHT_MULTIPLIER := {
     },
 }
 
-###
+# --- SurfaceTiler global state ---
+
+var manifest: Dictionary
 
 # Dictionary<int, String>
 var SUBTILE_CORNER_TYPE_VALUE_TO_KEY: Dictionary
@@ -106,10 +118,24 @@ var initializer: CornerMatchTilesetInitializer
 # }>
 var tileset_configs: Array
 
-###
+# ---
 
 
-func register_manifest(manifest: Dictionary) -> void:
+func _ready() -> void:
+    assert(has_node("/root/Sc"),
+            "The Sc (Scaffolder) AutoLoad must be declared first.")
+    
+    Sc.logger.on_global_init(self, "St")
+    Sc.register_framework_config(self)
+
+
+func _amend_app_manifest(app_manifest: Dictionary) -> void:
+    pass
+
+
+func _register_app_manifest(app_manifest: Dictionary) -> void:
+    self.manifest = app_manifest.surface_tiler_manifest
+    
     self.outer_autotile_name = manifest.outer_autotile_name
     if manifest.has("inner_autotile_name"):
         self.inner_autotile_name = manifest.inner_autotile_name
@@ -124,8 +150,22 @@ func register_manifest(manifest: Dictionary) -> void:
     self.implicit_quadrant_connection_color = \
             manifest.implicit_quadrant_connection_color
     
-    _parse_subtile_corner_key_values()
+    assert(manifest.tilesets is Array)
+    self.tileset_configs = manifest.tilesets
+    for tileset_config in manifest.tilesets:
+        assert(tileset_config.tile_set is CornerMatchTileset)
+        assert(tileset_config.tileset_quadrants_path is String)
+        assert(tileset_config.tileset_corner_type_annotations_path is String)
+        assert(tileset_config.quadrant_size is int)
+        assert(tileset_config.subtile_collision_margin is float or \
+                tileset_config.subtile_collision_margin is int)
+        assert(tileset_config.are_45_degree_subtiles_used is bool)
+        assert(tileset_config.are_27_degree_subtiles_used is bool)
     
+    _parse_subtile_corner_key_values()
+
+
+func _instantiate_sub_modules() -> void:
     if !supports_runtime_autotiling and \
             Engine.editor_hint:
         return
@@ -164,18 +204,12 @@ func register_manifest(manifest: Dictionary) -> void:
     else:
         self.initializer = CornerMatchTilesetInitializer.new()
     self.add_child(initializer)
-    
-    assert(manifest.tilesets is Array)
-    self.tileset_configs = manifest.tilesets
-    for tileset_config in manifest.tilesets:
-        assert(tileset_config.tile_set is CornerMatchTileset)
-        assert(tileset_config.tileset_quadrants_path is String)
-        assert(tileset_config.tileset_corner_type_annotations_path is String)
-        assert(tileset_config.quadrant_size is int)
-        assert(tileset_config.subtile_collision_margin is float or \
-                tileset_config.subtile_collision_margin is int)
-        assert(tileset_config.are_45_degree_subtiles_used is bool)
-        assert(tileset_config.are_27_degree_subtiles_used is bool)
+
+
+func _configure_sub_modules() -> void:
+    if !supports_runtime_autotiling and \
+            Engine.editor_hint:
+        return
     
     _validate_subtile_corner_to_depth()
     _validate_subtile_depth_to_unmatched_corner_weight_multiplier()

@@ -59,7 +59,7 @@ func parse_corner_type_annotation_key(
                     quadrant_row_index * quadrant_column_count + \
                     quadrant_column_index)
             if corner_type >= \
-                    Su.subtile_manifest.SUBTILE_CORNER_TYPE_VALUE_TO_KEY.size():
+                    St.SUBTILE_CORNER_TYPE_VALUE_TO_KEY.size():
                 # We've reached the end of the annotation key, and any remaining
                 # cells should be empty.
                 break
@@ -403,7 +403,7 @@ static func _get_implicit_connection_indicator(
     var y := int(quadrant_position.y + y_offset)
     var color := image.get_pixel(x, y)
     
-    return color == Su.subtile_manifest.implicit_quadrant_connection_color
+    return color == St.implicit_quadrant_connection_color
 
 
 static func _get_annotation(
@@ -537,7 +537,7 @@ static func _get_explicit_connection_type(
             image)
     if connection_direction != ConnectionDirection.SELF and \
             annotation.color == \
-            Su.subtile_manifest.implicit_quadrant_connection_color.to_rgba32():
+            St.implicit_quadrant_connection_color.to_rgba32():
         # Skip any possible explicit-annotation interpretation for the
         # implicit-annotation color.
         return SubtileCorner.UNKNOWN
@@ -815,12 +815,12 @@ static func _validate_annotation_key_annotation(
                 path))
     
     assert(color != \
-            Su.subtile_manifest.implicit_quadrant_connection_color.to_rgba32(),
+            St.implicit_quadrant_connection_color.to_rgba32(),
             ("A corner-type annotation cannot use the color that's " +
             "configured as the implicit_quadrant_connection_color: " +
             "color=%s, implicit_connection_color=%s, %s") % [
                 Color(color).to_html(),
-                Color(Su.subtile_manifest.implicit_quadrant_connection_color) \
+                Color(St.implicit_quadrant_connection_color) \
                     .to_html(),
                 _get_log_string(
                     quadrant_position,

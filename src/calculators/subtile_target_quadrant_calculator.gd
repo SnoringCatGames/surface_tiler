@@ -15,7 +15,7 @@ func get_quadrants(
     var tileset: CornerMatchTileset = tilemap.tile_set
     
     if !Engine.editor_hint and \
-            !Su.subtile_manifest.supports_runtime_autotiling:
+            !St.supports_runtime_autotiling:
         return tileset.error_quadrants
     
     var proximity := CellProximity.new(
@@ -82,7 +82,7 @@ func get_quadrants(
             Sc.logger.print("")
         
         if quadrant_weight < \
-                Su.subtile_manifest.ACCEPTABLE_MATCH_WEIGHT_THRESHOLD and \
+                St.ACCEPTABLE_MATCH_WEIGHT_THRESHOLD and \
                 logs_error_info:
             Sc.logger.warning(
                 ("No matching quadrant was found: " +
@@ -182,14 +182,14 @@ func _get_best_quadrant_match(
             Sc.logger.print("%s[%s] %s: %s, %s (%s)" % [
                 Sc.utils.get_spaces(index * 2),
                 str(index),
-                Su.subtile_manifest.get_subtile_corner_string(target_corner_type),
+                St.get_subtile_corner_string(target_corner_type),
                 "direct_match",
                 direct_match_weight_contribution,
                 direct_match_weight,
             ])
     
     if index == 0 or \
-            !Su.subtile_manifest.allows_fallback_corner_matches:
+            !St.allows_fallback_corner_matches:
         best_position_and_weight.resize(_QUADRANT_DEBUG_RESULTS_COUNT)
         best_position_and_weight[index + 2] = {
             weight_contribution = best_weight_contribution,
@@ -243,7 +243,7 @@ func _get_best_quadrant_match(
             Sc.logger.print("%s[%s] %s: %s, %s (%s)" % [
                 Sc.utils.get_spaces(index * 2),
                 str(index),
-                Su.subtile_manifest.get_subtile_corner_string(SubtileCorner.UNKNOWN),
+                St.get_subtile_corner_string(SubtileCorner.UNKNOWN),
                 "unknown_match",
                 fallback_weight_contribution,
                 fallback_weight,
@@ -330,7 +330,7 @@ func _get_best_quadrant_match(
                 Sc.logger.print("%s[%s] %s: %s, %s (%s)" % [
                     Sc.utils.get_spaces(index * 2),
                     str(index),
-                    Su.subtile_manifest.get_subtile_corner_string(fallback_corner_type),
+                    St.get_subtile_corner_string(fallback_corner_type),
                     fallback_match_label,
                     fallback_weight_contribution,
                     fallback_weight,
@@ -350,7 +350,7 @@ func _get_debug_types(
         debug_corner_direction: int,
         current_corner_direction: int,
         tileset: CornerMatchTileset) -> Array:
-    return Su.subtile_manifest.annotations_parser.parse_quadrant(
+    return St.annotations_parser.parse_quadrant(
                 debug_subtile_position * tileset.get_inner_cell_size().x * 2,
                 debug_corner_direction,
                 tileset.get_inner_cell_size().x,
@@ -451,7 +451,7 @@ func _print_subtile_corner_types_recursively(
                     ("subtile_corner_types does not contain the target " +
                     "connection type: " +
                     "target_type=%s, index=%s, target_types=%s") % [
-                        Su.subtile_manifest.get_subtile_corner_string(
+                        St.get_subtile_corner_string(
                                 target_connection_type),
                         str(index),
                         str(filter_connection_types),
@@ -550,7 +550,7 @@ func _print_subtile_connection_entry(
     var message := "%s%s: %s%s [%s]%s" % [
         spaces,
         _get_neighbor_label_for_index(index),
-        Su.subtile_manifest.get_subtile_corner_string(connection_type),
+        St.get_subtile_corner_string(connection_type),
         quadrant_coordinates_string,
         fallback_weight_string,
         connection_weight_string
@@ -575,7 +575,7 @@ func _get_position_and_weight_results_string(
                 neighbor_result == null else \
                 "(%s, %s, %s)" % [
                     neighbor_result.match_label,
-                    Su.subtile_manifest.get_subtile_corner_string(
+                    St.get_subtile_corner_string(
                         neighbor_result.corner_type),
                     str(neighbor_result.weight_contribution),
                 ]
