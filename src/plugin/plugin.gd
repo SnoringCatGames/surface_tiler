@@ -2,6 +2,26 @@ tool
 extends EditorPlugin
 
 
+# FIXME: LEFT OFF HERE: ------------------------------------------
+# - Add support for configuring default manifest values within the
+#   FrameworkManifestSchema subclass.
+#   - E.g., SurfaceTilerManifestSchema should define default scripts and
+#     tilesets to use based on the versions included in the library.
+# - Create FrameworkManifestController:
+#   - _create_property_controls
+#     - Actually, move this to FrameworkManifestPanel.
+#     - Try to re-use built-in Godot widgets if possible?
+# - Refactor SurfaceTiler manifest to use the new plugin UI instead of GDScript
+#   in SquirrelAway.
+# - Create the multi-plugin scheme:
+#   - Expect that Scaffolder will be the one core plugin that all the others depend upon.
+#   - Expect that each individual plugin will register itself with Sc.
+#   - Refactor things to work regardless of the order that AutoLoads are included.
+#   - Expect that Scaffolder will force the order of plugin initialization to be as needed.
+#     - Expect that each plugin will define a priority value.
+#   - 
+
+
 const _SURFACE_TILER_ICON := \
         preload("res://addons/surface_tiler/assets/images/surface_tiler.png")
 const _SURFACE_TILER_MAIN_PANEL_SCENE := \

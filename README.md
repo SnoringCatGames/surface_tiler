@@ -20,7 +20,7 @@ _FIXME: Add a hook._
 
 FIXME: Add documentation.
 
-## Licenses
+## 📃 Licenses
 
 -   All code is published under the [MIT license](LICENSE).
 -   This project depends on various pieces of third-party code that are licensed separately. [Here is a list of these third-party licenses](./src/config/surfacer_third_party_licenses.gd).
