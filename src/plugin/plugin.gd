@@ -33,6 +33,10 @@ var corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
 
 func _init() -> void:
     add_autoload_singleton("St", "res://addons/surface_tiler/src/config/st.gd")
+    
+    var manifest_schema := SurfaceTilerManifestSchema.new()
+    var manifest_controller := FrameworkManifestController.new()
+    manifest_controller.set_up(manifest_schema)
 
 
 func _enter_tree() -> void:
@@ -41,6 +45,7 @@ func _enter_tree() -> void:
     add_inspector_plugin(corner_match_tilemap_inspector_plugin)
     
     main_panel = _SURFACE_TILER_MAIN_PANEL_SCENE.instance()
+    main_panel.set_up(manifest_controller)
     get_editor_interface().get_editor_viewport().add_child(main_panel)
     
     make_visible(false)

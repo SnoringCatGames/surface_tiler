@@ -20,9 +20,8 @@ func set_up(schema: FrameworkManifestSchema) -> void:
     var display_name := schema.get_framework_display_name()
     
     _validate_schema()
-    _load_property_values()
-    _save_property_values()
-    _create_property_controls()
+    _load()
+    save()
 
 
 func _validate_schema() -> void:
@@ -56,7 +55,7 @@ func _validate_schema_recursively(
                     prefix + key + ">")
 
 
-func _load_property_values() -> void:
+func _load() -> void:
     var status := config_file.load(get_settings_path())
     if status != OK and \
             status != ERR_FILE_NOT_FOUND:
@@ -72,7 +71,7 @@ func _load_property_values() -> void:
     _clean_property_values()
 
 
-func _save_property_values() -> void:
+func save() -> void:
     var status := config_file.save(get_settings_path())
     if status != OK:
         Sc.logger.error("Unable to save manifest file (%s): %s" % [
@@ -174,10 +173,3 @@ func _get_is_expected_type(value, type) -> bool:
 func get_settings_path() -> String:
     var folder_name := schema.get_framework_folder_name()
     return "res://addons/%s/manifest.cfg" % folder_name
-
-
-func _create_property_controls() -> void:
-    var schema_properties := schema.get_properties()
-    for key in schema_properties:
-        # FIXME: LEFT OFF HERE: -----------------
-        pass
