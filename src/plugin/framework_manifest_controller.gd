@@ -3,14 +3,11 @@ class_name FrameworkManifestController
 extends Reference
 
 
-var _SECTION := "manifest"
-var _KEY := "properties"
+const _PROPERTY_TYPE_KEY_PREFIX := "$type:"
 
 var schema: FrameworkManifestSchema
 
 var properties: Dictionary
-
-var config_file := ConfigFile.new()
 
 
 func set_up(schema: FrameworkManifestSchema) -> void:
@@ -56,28 +53,12 @@ func _validate_schema_recursively(
 
 
 func _load() -> void:
-    var status := config_file.load(get_settings_path())
-    if status != OK and \
-            status != ERR_FILE_NOT_FOUND:
-        Sc.logger.error("Unable to load manifest file (%s): %s" % [
-            get_settings_path(),
-            str(status),
-        ])
-        return
-    
-    properties = config_file.get_value(_SECTION, _KEY, {})
-    assert(properties is Dictionary)
-    
+    properties = Sc.json.load_file(schema.get_manifest_path(), true, true)
     _clean_property_values()
 
 
 func save() -> void:
-    var status := config_file.save(get_settings_path())
-    if status != OK:
-        Sc.logger.error("Unable to save manifest file (%s): %s" % [
-            get_settings_path(),
-            str(status),
-        ])
+    Sc.json.save_file(properties, schema.get_manifest_path(), true)
 
 
 func _clean_property_values() -> void:
@@ -106,17 +87,24 @@ func _clean_dictionary_values(
         var saved_value = local_properties[key]
         
         # Ensure this value is the correct type.
-        if !_get_is_expected_type(saved_value, type):
+        if !FrameworkManifestSchema.get_is_expected_type(saved_value, type):
             Sc.logger.warning(
                     ("Invalid value saved in manifest: " +
-                    "%s => %s (expected type %s)") % [
+                    "%s => %s (actual: %s, expected: %s)") % [
                         config_key_prefix + key,
                         str(saved_value),
-                        str(type),
+                        str(FrameworkManifestSchema.get_type_string(
+                            typeof(saved_value))),
+                        str(FrameworkManifestSchema.get_type_string(type)),
                     ])
             local_properties[key] = \
                     FrameworkManifestSchema.get_default_value(type)
             saved_value = local_properties[key]
+        
+        # Record an additional entry to indicate the value's type.
+        # (This is needed for rendering the correct editor controls for null
+        # values.)
+        local_properties[_PROPERTY_TYPE_KEY_PREFIX + key] = type
         
         if type is Dictionary:
             _clean_dictionary_values(
@@ -141,7 +129,8 @@ func _clean_array_values(
         config_key_prefix := "") -> void:
     # Remove any invalid-typed entries from the array.
     for i in local_properties.size():
-        if !_get_is_expected_type(local_properties[i], schema_type):
+        if !FrameworkManifestSchema \
+                .get_is_expected_type(local_properties[i], schema_type):
             local_properties.remove(i)
             i -= 1
     
@@ -162,14 +151,3 @@ func _clean_array_values(
             # Do nothing.
             # The schema doesn't specify any structure for this array.
             pass
-
-
-func _get_is_expected_type(value, type) -> bool:
-    return type is int and typeof(value) == type or \
-            type is Dictionary and value is Dictionary or \
-            type is Array and value is Array
-
-
-func get_settings_path() -> String:
-    var folder_name := schema.get_framework_folder_name()
-    return "res://addons/%s/manifest.cfg" % folder_name

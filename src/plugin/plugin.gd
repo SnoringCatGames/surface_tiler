@@ -32,13 +32,22 @@ var corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
 
 func _init() -> void:
     add_autoload_singleton("St", "res://addons/surface_tiler/src/config/st.gd")
-    
-    var manifest_schema := SurfaceTilerManifestSchema.new()
-    manifest_controller = FrameworkManifestController.new()
-    manifest_controller.set_up(manifest_schema)
+    St.connect("initialized", self, "_on_framework_initialized")
+
+
+func _on_framework_initialized() -> void:
+    if is_inside_tree():
+        manifest_controller = FrameworkManifestController.new()
+        manifest_controller.set_up(SurfaceTilerManifestSchema.new())
+        _set_up()
 
 
 func _enter_tree() -> void:
+    if St.is_initialized:
+        _set_up()
+
+
+func _set_up() -> void:
     corner_match_tilemap_inspector_plugin = \
             CornerMatchTilemapInspectorPlugin.new()
     add_inspector_plugin(corner_match_tilemap_inspector_plugin)
