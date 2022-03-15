@@ -76,7 +76,7 @@ func _create_bool_editor(
         key,
         property_parent) -> CheckBox:
     var control := CheckBox.new()
-    control.pressed = true
+    control.pressed = value
     control.connect(
             "toggled",
             self,
