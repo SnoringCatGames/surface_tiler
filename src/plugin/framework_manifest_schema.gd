@@ -53,9 +53,12 @@ static func get_allowed_manifest_schema_types_set() -> Dictionary:
 
 
 static func get_default_value(type):
-    if !(type is int):
-        return type
-    return _DEFAULT_VALUES[type]
+    if type is Dictionary:
+        return {}
+    elif type is Array:
+        return []
+    else:
+        return _DEFAULT_VALUES[type]
 
 
 static func get_is_expected_type(

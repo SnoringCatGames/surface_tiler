@@ -13,9 +13,6 @@ var properties: Dictionary
 func set_up(schema: FrameworkManifestSchema) -> void:
     self.schema = schema
     
-    # FIXME: LEFT OFF HERE: --------------------
-    var display_name := schema.get_framework_display_name()
-    
     _validate_schema()
     _load()
     save()
@@ -58,7 +55,29 @@ func _load() -> void:
 
 
 func save() -> void:
-    Sc.json.save_file(properties, schema.get_manifest_path(), true)
+    Sc.json.save_file(
+            _filter_type_keys(properties),
+            schema.get_manifest_path(),
+            true,
+            true)
+
+
+func _filter_type_keys(value):
+    if value is Dictionary:
+        var copy := {}
+        for key in value:
+            if key.begins_with(_PROPERTY_TYPE_KEY_PREFIX):
+                continue
+            copy[key] = _filter_type_keys(value[key])
+        return copy
+    elif value is Array:
+        var copy := []
+        copy.resize(value.size())
+        for i in value.size():
+            copy[i] = _filter_type_keys(value[i])
+        return copy
+    else:
+        return value
 
 
 func _clean_property_values() -> void:

@@ -1,0 +1,22 @@
+{
+  "outer_autotile_name": "",
+  "inner_autotile_name": "",
+  "forces_convex_collision_shapes": false,
+  "allows_fallback_corner_matches": true,
+  "supports_runtime_autotiling": false,
+  "corner_type_annotation_key_path": "",
+  "implicit_quadrant_connection_color": {
+    "r": 1,
+    "g": 0,
+    "b": 0,
+    "a": 1
+  },
+  "annotations_parser_class": null,
+  "corner_calculator_class": null,
+  "quadrant_calculator_class": null,
+  "initializer_class": null,
+  "shape_calculator_class": null,
+  "tilesets": [
+
+  ]
+}

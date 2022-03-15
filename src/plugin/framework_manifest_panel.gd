@@ -3,17 +3,26 @@ class_name FrameworkManifestPanel
 extends VBoxContainer
 
 
-# FIXME: LEFT OFF HERE: ------------------------------------
-# - controller.save()
+const _ROW_SCENE := \
+        preload("res://addons/surface_tiler/src/plugin/framework_manifest_row.tscn")
+
+const _PANEL_WIDTH := 1000.0
+const _CONTROL_WIDTH := 320.0
+const _PADDING := 4.0
+const _LABEL_WIDTH := _PANEL_WIDTH - _CONTROL_WIDTH - _PADDING * 3.0
+
+var _row_count := 0
 
 
-var controller: FrameworkManifestController
-
-
-func set_up(controller: FrameworkManifestController) -> void:
-    self.controller = controller
+func _init() -> void:
+    self.rect_min_size.x = _PANEL_WIDTH
+    
+    _row_count = 0
+    
+    Sc.utils.clear_children(self)
+    
     _create_property_controls_from_dictionary(
-            controller.properties,
+            St.manifest_controller.properties,
             "",
             self)
 
@@ -62,167 +71,23 @@ func _create_property_control_from_value(
         key,
         property_parent,
         control_parent: Container) -> void:
-    var hbox := HBoxContainer.new()
-    control_parent.add_child(hbox)
+    var row := Sc.utils.add_scene(self, _ROW_SCENE)
     
-    var label := Label.new()
-    label.text = key.capitalize()
-    hbox.add_child(label)
+    row.value = value
+    row.type = type
+    row.key = key
+    row.property_parent = property_parent
     
-    var control: Control
-    match type:
-        TYPE_BOOL:
-            control = _create_bool_editor(value, key, property_parent)
-        TYPE_INT:
-            control = _create_int_editor(value, key, property_parent)
-        TYPE_REAL:
-            control = _create_float_editor(value, key, property_parent)
-        TYPE_STRING:
-            control = _create_string_editor(value, key, property_parent)
-        TYPE_COLOR:
-            control = _create_color_editor(value, key, property_parent)
-        FrameworkManifestSchema.TYPE_SCRIPT, \
-        FrameworkManifestSchema.TYPE_TILESET, \
-        FrameworkManifestSchema.TYPE_RESOURCE:
-            control = _create_resource_editor(
-                    value,
-                    key,
-                    property_parent,
-                    type)
-        _:
-            Sc.logger.error(
-                    "FrameworkManifestPanel._create_property_control_from_value")
-    hbox.add_child(control)
+    row.set_up(
+        control_parent,
+        _row_count,
+        _LABEL_WIDTH,
+        _CONTROL_WIDTH,
+        _PADDING)
+    row.connect("changed", self, "_on_value_changed")
+    
+    _row_count += 1
 
 
-func _create_bool_editor(
-        value: bool,
-        key,
-        property_parent) -> CheckBox:
-    var control := CheckBox.new()
-    control.pressed = true
-    control.connect(
-            "toggled",
-            self,
-            "_on_bool_changed",
-            [key, property_parent])
-    return control
-
-
-func _create_int_editor(
-        value: int,
-        key,
-        property_parent) -> SpinBox:
-    var control := SpinBox.new()
-    control.step = 1.0
-    control.rounded = true
-    control.value = value
-    control.connect(
-            "value_changed",
-            self,
-            "_on_int_changed",
-            [key, property_parent])
-    return control
-
-
-func _create_float_editor(
-        value: float,
-        key,
-        property_parent) -> SpinBox:
-    var control := SpinBox.new()
-    control.step = 0.0
-    control.rounded = false
-    control.value = value
-    control.connect(
-            "value_changed",
-            self,
-            "_on_float_changed",
-            [key, property_parent])
-    return control
-
-
-func _create_string_editor(
-        value: String,
-        key,
-        property_parent) -> TextEdit:
-    var control := TextEdit.new()
-    control.text = value
-    control.connect(
-            "text_changed",
-            self,
-            "_on_string_changed",
-            [control, key, property_parent])
-    return control
-
-
-func _create_color_editor(
-        value: Color,
-        key,
-        property_parent) -> ColorPicker:
-    var control := ColorPicker.new()
-    control.color = value
-    control.connect(
-            "color_changed",
-            self,
-            "_on_color_changed",
-            [key, property_parent])
-    return control
-
-
-func _create_resource_editor(
-        value: Resource,
-        key,
-        property_parent,
-        resource_type := -1) -> EditorResourcePicker:
-    var control := EditorResourcePicker.new()
-    control.edited_resource = value
-    control.base_type = \
-            FrameworkManifestSchema.get_resource_class_name(resource_type)
-    control.connect(
-            "resource_changed",
-            self,
-            "_on_resource_changed",
-            [key, property_parent])
-    return control
-
-
-func _on_bool_changed(
-        value: bool,
-        key,
-        property_parent) -> void:
-    property_parent[key] = value
-
-
-func _on_int_changed(
-        value: float,
-        key,
-        property_parent) -> void:
-    property_parent[key] = int(value)
-
-
-func _on_float_changed(
-        value: float,
-        key,
-        property_parent) -> void:
-    property_parent[key] = value
-
-
-func _on_string_changed(
-        control: TextEdit,
-        key,
-        property_parent) -> void:
-    property_parent[key] = control.text
-
-
-func _on_color_changed(
-        value: Color,
-        key,
-        property_parent) -> void:
-    property_parent[key] = value
-
-
-func _on_resource_changed(
-        value: Resource,
-        key,
-        property_parent) -> void:
-    property_parent[key] = value
+func _on_value_changed() -> void:
+    St.manifest_controller.save()

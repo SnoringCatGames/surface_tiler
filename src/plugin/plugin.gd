@@ -25,7 +25,6 @@ extends EditorPlugin
 const _SURFACE_TILER_MAIN_PANEL_SCENE := \
         preload("res://addons/surface_tiler/src/plugin/surface_tiler_main_panel.tscn")
 
-var manifest_controller: FrameworkManifestController
 var main_panel: SurfaceTilerMainPanel
 var corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
 
@@ -33,12 +32,14 @@ var corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
 func _init() -> void:
     add_autoload_singleton("St", "res://addons/surface_tiler/src/config/st.gd")
     St.connect("initialized", self, "_on_framework_initialized")
+    if St.is_initialized:
+        _on_framework_initialized()
 
 
 func _on_framework_initialized() -> void:
-    if is_inside_tree():
-        manifest_controller = FrameworkManifestController.new()
-        manifest_controller.set_up(SurfaceTilerManifestSchema.new())
+    if is_inside_tree() and !is_instance_valid(St.manifest_controller):
+        St.manifest_controller = FrameworkManifestController.new()
+        St.manifest_controller.set_up(SurfaceTilerManifestSchema.new())
         _set_up()
 
 
@@ -53,7 +54,6 @@ func _set_up() -> void:
     add_inspector_plugin(corner_match_tilemap_inspector_plugin)
     
     main_panel = _SURFACE_TILER_MAIN_PANEL_SCENE.instance()
-    main_panel.set_up(manifest_controller)
     get_editor_interface().get_editor_viewport().add_child(main_panel)
     
     make_visible(false)
