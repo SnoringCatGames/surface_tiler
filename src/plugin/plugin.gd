@@ -22,11 +22,10 @@ extends EditorPlugin
 #   - 
 
 
-const _SURFACE_TILER_ICON := \
-        preload("res://addons/surface_tiler/assets/images/surface_tiler.png")
 const _SURFACE_TILER_MAIN_PANEL_SCENE := \
         preload("res://addons/surface_tiler/src/plugin/surface_tiler_main_panel.tscn")
 
+var manifest_controller: FrameworkManifestController
 var main_panel: SurfaceTilerMainPanel
 var corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
 
@@ -35,7 +34,7 @@ func _init() -> void:
     add_autoload_singleton("St", "res://addons/surface_tiler/src/config/st.gd")
     
     var manifest_schema := SurfaceTilerManifestSchema.new()
-    var manifest_controller := FrameworkManifestController.new()
+    manifest_controller = FrameworkManifestController.new()
     manifest_controller.set_up(manifest_schema)
 
 
@@ -71,4 +70,17 @@ func get_plugin_name() -> String:
 
 
 func get_plugin_icon() -> Texture:
-    return _SURFACE_TILER_ICON
+    # TODO: We need better support for updating icon colors based on theme: 
+    # https://github.com/godotengine/godot-proposals/issues/572
+    var is_light_theme: bool = \
+            get_editor_interface().get_editor_settings() \
+                .get_setting("interface/theme/base_color").v > 0.5
+    var theme := "light" if is_light_theme else "dark"
+    var scale := get_editor_interface().get_editor_scale()
+    var icon_path := \
+            ("res://addons/surface_tiler/assets/images/" +
+            "surface_tiler_%s_theme_%s.png") % [
+                theme,
+                str(scale),
+            ]
+    return load(icon_path) as Texture
