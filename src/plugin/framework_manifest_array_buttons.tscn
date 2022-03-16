@@ -35,6 +35,7 @@ margin_left = 4.0
 margin_right = 64.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 60, 0 )
+hint_tooltip = "Delete the last item from the array."
 text = "-"
 
 [node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer"]
@@ -49,6 +50,7 @@ margin_left = 80.0
 margin_right = 140.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 60, 0 )
+hint_tooltip = "Add an item to the end of the array."
 text = "+"
 
 [node name="Spacer3" type="Control" parent="MarginContainer/HBoxContainer"]

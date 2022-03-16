@@ -30,5 +30,6 @@ size_flags_horizontal = 3
 margin_right = 1.0
 margin_bottom = 14.0
 rect_clip_content = true
+mouse_filter = 1
 size_flags_horizontal = 3
 clip_text = true

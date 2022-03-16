@@ -25,7 +25,7 @@ func set_up(
 
 func update_zebra_stripes(index: int) -> int:
     var style: StyleBox
-    if index % 2 == 0:
+    if index % 2 == 1:
         style = StyleBoxEmpty.new()
     else:
         style = StyleBoxFlat.new()

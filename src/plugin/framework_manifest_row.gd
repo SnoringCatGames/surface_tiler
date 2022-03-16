@@ -5,6 +5,9 @@ extends PanelContainer
 
 signal changed
 
+const _HIDE_SCROLL_BARS_THEME := \
+        preload("res://addons/surface_tiler/src/plugin/hide_scroll_bars.tres")
+
 var value
 var type
 var key
@@ -29,6 +32,7 @@ func set_up(
         text = key.capitalize()
     
     $MarginContainer/HBoxContainer/Label.text = text
+    $MarginContainer/HBoxContainer/Label.hint_tooltip = text
     
     var value_editor := _create_value_editor()
     value_editor.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -39,7 +43,7 @@ func set_up(
 
 func update_zebra_stripes(index: int) -> int:
     var style: StyleBox
-    if index % 2 == 0:
+    if index % 2 == 1:
         style = StyleBoxEmpty.new()
     else:
         style = StyleBoxFlat.new()
@@ -132,6 +136,8 @@ func _create_string_editor(
         property_parent) -> TextEdit:
     var control := TextEdit.new()
     control.text = value
+    control.theme = _HIDE_SCROLL_BARS_THEME
+    control.hint_tooltip = value
     control.connect(
             "text_changed",
             self,
@@ -184,4 +190,5 @@ func _on_string_changed(
         key,
         property_parent) -> void:
     property_parent[key] = control.text
+    control.hint_tooltip = control.text
     emit_signal("changed")

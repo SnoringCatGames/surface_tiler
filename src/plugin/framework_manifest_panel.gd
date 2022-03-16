@@ -1,6 +1,6 @@
 tool
 class_name FrameworkManifestPanel
-extends VBoxContainer
+extends ScrollContainer
 
 
 const _ROW_SCENE := \
@@ -10,21 +10,21 @@ const _ROW_GROUP_SCENE := \
 const _ARRAY_BUTTONS_SCENE := \
         preload("res://addons/surface_tiler/src/plugin/framework_manifest_array_buttons.tscn")
 
-const _PANEL_WIDTH := 1000.0
+const _PANEL_WIDTH := 600.0
 const _CONTROL_WIDTH := 320.0
 const _PADDING := 4.0
 const _LABEL_WIDTH := _PANEL_WIDTH - _CONTROL_WIDTH - _PADDING * 3.0
 
 
-func _init() -> void:
-    self.rect_min_size.x = _PANEL_WIDTH
+func _ready() -> void:
+    $VBoxContainer.rect_min_size.x = _PANEL_WIDTH
     
-    Sc.utils.clear_children(self)
+    Sc.utils.clear_children($VBoxContainer)
     
     _create_property_controls_from_dictionary(
             St.manifest_controller.properties,
             "",
-            self)
+            $VBoxContainer)
     
     _update_zebra_stripes()
 
@@ -218,6 +218,11 @@ func _on_array_item_deleted(buttons: FrameworkManifestArrayButtons) -> void:
 
 func _update_zebra_stripes() -> void:
     var row_count := 0
-    for row in get_children():
+    for row in $VBoxContainer.get_children():
         if is_instance_valid(row):
             row_count = row.update_zebra_stripes(row_count)
+
+
+func update_size(size: Vector2) -> void:
+    self.rect_min_size.x = size.x - 160.0
+    self.rect_min_size.y = size.y - 160.0
