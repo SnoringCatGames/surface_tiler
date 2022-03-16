@@ -6,28 +6,15 @@ extends PanelContainer
 signal changed
 
 var value
-var type: int
+var type
 var key
 var property_parent
-var depth: int
 
 
 func set_up(
-        control_parent: Container,
-        index: int,
         label_width: float,
         control_width: float,
-        padding: float,
-        indent_width: float) -> void:
-    var style: StyleBox
-    if index % 2 == 0:
-        style = StyleBoxEmpty.new()
-    else:
-        style = StyleBoxFlat.new()
-        style.bg_color = Color.from_hsv(0.0, 0.0, 0.7, 0.1)
-    
-    self.add_stylebox_override("panel", style)
-    
+        padding: float) -> void:
     $MarginContainer.add_constant_override("margin_top", padding)
     $MarginContainer.add_constant_override("margin_bottom", padding)
     $MarginContainer.add_constant_override("margin_left", padding)
@@ -35,25 +22,39 @@ func set_up(
     
     $MarginContainer/HBoxContainer.add_constant_override("separation", padding)
     
-    if depth > 0:
-        $MarginContainer/HBoxContainer/Indent.rect_min_size.x = \
-                indent_width * depth - padding
+    var text: String
+    if key is int:
+        text = "[%d]" % key
     else:
-        $MarginContainer/HBoxContainer/Indent.queue_free()
+        text = key.capitalize()
     
-    $MarginContainer/HBoxContainer/Label.text = key.capitalize()
-    $MarginContainer/HBoxContainer/Label.rect_min_size.x = label_width
-    $MarginContainer/HBoxContainer/Label.rect_size.x = label_width
+    $MarginContainer/HBoxContainer/Label.text = text
     
     var value_editor := _create_value_editor()
     value_editor.size_flags_horizontal = SIZE_EXPAND_FILL
     value_editor.rect_clip_content = true
     value_editor.rect_min_size.x = control_width
-    value_editor.rect_size.x = control_width
     $MarginContainer/HBoxContainer.add_child(value_editor)
 
 
+func update_zebra_stripes(index: int) -> int:
+    var style: StyleBox
+    if index % 2 == 0:
+        style = StyleBoxEmpty.new()
+    else:
+        style = StyleBoxFlat.new()
+        style.bg_color = Color.from_hsv(0.0, 0.0, 0.7, 0.1)
+    self.add_stylebox_override("panel", style)
+    
+    return index + 1
+
+
 func _create_value_editor() -> Control:
+    if type is Dictionary or \
+            type is Array:
+        # Use an empty placeholder control.
+        return Control.new()
+    
     match type:
         TYPE_BOOL:
             return _create_bool_editor(value, key, property_parent)
@@ -73,10 +74,6 @@ func _create_value_editor() -> Control:
                     key,
                     property_parent,
                     type)
-        TYPE_DICTIONARY, \
-        TYPE_ARRAY:
-            # Use an empty placeholder control.
-            return Control.new()
         _:
             Sc.logger.error(
                     "FrameworkManifestPanel._create_property_control_from_value")

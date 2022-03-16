@@ -6,7 +6,7 @@
 margin_right = 14.0
 margin_bottom = 14.0
 rect_clip_content = true
-size_flags_horizontal = 3
+size_flags_horizontal = 8
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -15,53 +15,47 @@ __meta__ = {
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 107.0
+margin_right = 151.0
 margin_bottom = 27.0
 rect_clip_content = true
-size_flags_horizontal = 3
+size_flags_horizontal = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-margin_right = 100.0
+margin_right = 144.0
 margin_bottom = 20.0
 rect_clip_content = true
-size_flags_horizontal = 3
-
-[node name="Indent" type="Control" parent="MarginContainer/HBoxContainer"]
-margin_bottom = 20.0
+size_flags_horizontal = 8
 
 [node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer"]
-margin_left = 4.0
-margin_right = 12.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 8, 0 )
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 
 [node name="DeleteButton" type="Button" parent="MarginContainer/HBoxContainer"]
-margin_left = 16.0
-margin_right = 44.0
+margin_left = 4.0
+margin_right = 64.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 28, 0 )
+rect_min_size = Vector2( 60, 0 )
 text = "-"
 
 [node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer"]
-margin_left = 48.0
-margin_right = 56.0
+margin_left = 68.0
+margin_right = 76.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 8, 0 )
+size_flags_horizontal = 4
 
 [node name="AddButton" type="Button" parent="MarginContainer/HBoxContainer"]
-margin_left = 60.0
-margin_right = 88.0
+margin_left = 80.0
+margin_right = 140.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 28, 0 )
+rect_min_size = Vector2( 60, 0 )
 text = "+"
 
 [node name="Spacer3" type="Control" parent="MarginContainer/HBoxContainer"]
-margin_left = 92.0
-margin_right = 100.0
+margin_left = 144.0
+margin_right = 144.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 8, 0 )
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/AddButton" to="." method="_on_AddButton_pressed"]

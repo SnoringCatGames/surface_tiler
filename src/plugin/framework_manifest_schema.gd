@@ -97,7 +97,17 @@ static func get_type(value) -> int:
         return typeof(value)
 
 
-static func get_type_string(type: int) -> String:
+static func get_type_string(type) -> String:
+    if type is int:
+        pass
+    elif type is Dictionary:
+        type = TYPE_DICTIONARY
+    elif type is Array:
+        type = TYPE_ARRAY
+    else:
+        Sc.logger.error("FrameworkManifestSchema.get_type_string")
+        return ""
+    
     match type:
         TYPE_SCRIPT:
             return "TYPE_SCRIPT"
