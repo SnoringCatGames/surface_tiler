@@ -5,6 +5,8 @@ extends VBoxContainer
 
 const _ROW_SCENE := \
         preload("res://addons/surface_tiler/src/plugin/framework_manifest_row.tscn")
+const _ARRAY_BUTTONS_SCENE := \
+        preload("res://addons/surface_tiler/src/plugin/framework_manifest_array_buttons.tscn")
 
 const _PANEL_WIDTH := 1000.0
 const _CONTROL_WIDTH := 320.0
@@ -31,13 +33,18 @@ func _init() -> void:
 
 func _create_property_controls_from_dictionary(
         properties: Dictionary,
-        key: String,
+        parent_key: String,
         parent: Container,
         depth: int) -> void:
     # Create the Dictionary row / label.
     if depth > 0:
         _create_property_control_from_value(
-                properties, TYPE_DICTIONARY, key, properties, parent, depth)
+                properties,
+                TYPE_DICTIONARY,
+                parent_key,
+                properties,
+                parent,
+                depth)
     
     for key in properties:
         if key.begins_with(
@@ -63,19 +70,25 @@ func _create_property_controls_from_dictionary(
 func _create_property_controls_from_array(
         properties: Array,
         type,
-        key: String,
+        parent_key: String,
         parent: Container,
         depth: int) -> void:
     # Create the Array row / label
     if depth > 0:
         _create_property_control_from_value(
-                properties, TYPE_DICTIONARY, key, properties, parent, depth)
+                properties,
+                TYPE_ARRAY,
+                parent_key,
+                properties,
+                parent,
+                depth)
     
     # FIXME: LEFT OFF HERE: ------------------
     # - Create editing/adding/removing/bulk buttons.
     
     for i in properties.size():
         var value = properties[i]
+        var key: String = "[%d]" % i
         
         if type is Dictionary:
             _create_property_controls_from_dictionary(
@@ -87,6 +100,12 @@ func _create_property_controls_from_array(
         else:
             _create_property_control_from_value(
                     value, type, key, properties, parent, depth)
+    
+    _create_array_buttons(
+            properties,
+            type,
+            parent,
+            depth)
 
 
 func _create_property_control_from_value(
@@ -116,5 +135,48 @@ func _create_property_control_from_value(
     _row_count += 1
 
 
+func _create_array_buttons(
+        property_parent,
+        type,
+        control_parent: Container,
+        depth: int) -> void:
+    var buttons := Sc.utils.add_scene(self, _ARRAY_BUTTONS_SCENE)
+    
+    buttons.depth = depth
+    
+    buttons.set_up(
+            control_parent,
+            _LABEL_WIDTH,
+            _CONTROL_WIDTH,
+            _PADDING,
+            _INDENT_WIDTH)
+    buttons.connect(
+            "added",
+            self,
+            "_on_array_item_added",
+            [property_parent, type])
+    buttons.connect(
+            "deleted",
+            self,
+            "_on_array_item_deleted",
+            [property_parent, type])
+    
+    _row_count += 1
+
+
 func _on_value_changed() -> void:
     St.manifest_controller.save()
+
+
+func _on_array_item_added(
+        property_parent,
+        type) -> void:
+    # FIXME: LEFT OFF HERE: ------------------------------
+    pass
+
+
+func _on_array_item_deleted(
+        property_parent,
+        type) -> void:
+    # FIXME: LEFT OFF HERE: ------------------------------
+    pass

@@ -3,6 +3,9 @@ extends EditorPlugin
 
 
 # FIXME: LEFT OFF HERE: ------------------------------------------
+# - Fix group nesting zebra-stripes:
+#   - Add extra space around group top and bottom rows.
+#   - Reset zebra stripe for each new group indent.
 # - Add Array editor buttons for add / delete.
 # - Remove scrollbars from TextEdit controls.
 # - Add support for arrays and dictionaries in the manifest panel.
