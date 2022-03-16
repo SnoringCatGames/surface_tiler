@@ -5,7 +5,6 @@ extends Node
 
 func initialize_tileset(tileset_config: Dictionary) -> void:
     var tile_set: CornerMatchTileset = tileset_config.tile_set
-    tile_set._config = tileset_config
     tile_set.are_45_degree_subtiles_used = \
             tileset_config.are_45_degree_subtiles_used
     tile_set.are_27_degree_subtiles_used = \
@@ -14,18 +13,8 @@ func initialize_tileset(tileset_config: Dictionary) -> void:
     tileset_config.tileset_quadrants_texture = \
             load(tileset_config.tileset_quadrants_path)
     
-    var corner_type_annotation_key: Dictionary = \
-            St.annotations_parser \
-                .parse_corner_type_annotation_key(
-                    St.corner_type_annotation_key_path,
-                    tileset_config.quadrant_size)
-    tile_set.corner_type_annotation_key = corner_type_annotation_key
-    var subtile_corner_types: Dictionary = \
-            St.annotations_parser \
-                .parse_tileset_corner_type_annotations(
-                    tileset_config.tileset_corner_type_annotations_path,
-                    tileset_config.quadrant_size,
-                    tile_set)
+    tile_set.corner_type_annotation_key = load_annotation_key(tileset_config)
+    var subtile_corner_types := load_corner_types(tileset_config)
     tile_set.subtile_corner_types = subtile_corner_types
     tile_set.empty_quadrants = _get_empty_quadrants(subtile_corner_types)
     tile_set.error_quadrants = _get_error_quadrants(subtile_corner_types)
@@ -75,6 +64,42 @@ func initialize_tileset(tileset_config: Dictionary) -> void:
                 tile_set,
                 CellAngleType.A27,
                 tileset_config)
+    
+    tile_set.is_initialized = true
+
+
+func load_annotation_key(tileset_config: Dictionary) -> Dictionary:
+    var key: Dictionary = \
+            St.annotations_recorder.load_corner_type_annotation_key(
+                St.corner_type_annotation_key_path)
+    if key.empty():
+        # FIXME: LEFT OFF HERE: -----------------
+        # - We should specify a single global quadrant_size for the key, since
+        #   tilesets should be able to use different sizes while sharing the
+        #   same key.
+        key = St.annotations_parser.parse_corner_type_annotation_key(
+                St.corner_type_annotation_key_path,
+                tileset_config.quadrant_size)
+        St.annotations_recorder.save_corner_type_annotation_key(
+                St.corner_type_annotation_key_path,
+                key)
+    return key
+
+
+func load_corner_types(tileset_config: Dictionary) -> Dictionary:
+    var subtile_corner_types: Dictionary = \
+            St.annotations_recorder.load_tileset_corner_type_annotations(
+                tileset_config.tileset_corner_type_annotations_path)
+    if subtile_corner_types.empty():
+        subtile_corner_types = \
+                St.annotations_parser.parse_tileset_corner_type_annotations(
+                    tileset_config.tileset_corner_type_annotations_path,
+                    tileset_config.quadrant_size,
+                    tileset_config.tile_set)
+        St.annotations_recorder.save_tileset_corner_type_annotations(
+                tileset_config.tileset_corner_type_annotations_path,
+                subtile_corner_types)
+    return subtile_corner_types
 
 
 func _initialize_inner_tile(

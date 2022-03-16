@@ -69,6 +69,8 @@ var SUBTILE_DEPTH_TO_UNMATCHED_CORNER_WEIGHT_MULTIPLIER := {
 
 var manifest: Dictionary
 
+var are_models_initialized := false
+
 # Dictionary<int, String>
 var SUBTILE_CORNER_TYPE_VALUE_TO_KEY: Dictionary
 
@@ -102,6 +104,7 @@ var corner_type_annotation_key_path: String
 var implicit_quadrant_connection_color: Color
 
 var annotations_parser: TilesetAnnotationsParser
+var annotations_recorder: TilesetAnnotationsRecorder
 var corner_calculator: SubtileTargetCornerCalculator
 var quadrant_calculator: SubtileTargetQuadrantCalculator
 var shape_calculator: CornerMatchTilesetShapeCalculator
@@ -161,6 +164,7 @@ func _register_app_manifest(app_manifest: Dictionary) -> void:
                 tileset_config.subtile_collision_margin is int)
         assert(tileset_config.are_45_degree_subtiles_used is bool)
         assert(tileset_config.are_27_degree_subtiles_used is bool)
+        tileset_config.tile_set._config = tileset_config
     
     _parse_subtile_corner_key_values()
 
@@ -176,6 +180,9 @@ func _instantiate_sub_modules() -> void:
     else:
         self.annotations_parser = TilesetAnnotationsParser.new()
     self.add_child(annotations_parser)
+    
+    self.annotations_recorder = TilesetAnnotationsRecorder.new()
+    self.add_child(annotations_recorder)
     
     if manifest.has("corner_calculator_class"):
         self.corner_calculator = manifest.corner_calculator_class.new()
@@ -207,6 +214,10 @@ func _instantiate_sub_modules() -> void:
 
 
 func _configure_sub_modules() -> void:
+    pass
+
+
+func initialize_models(includes_tilesets := false) -> void:
     if !supports_runtime_autotiling and \
             Engine.editor_hint:
         return
@@ -215,8 +226,11 @@ func _configure_sub_modules() -> void:
     _validate_subtile_depth_to_unmatched_corner_weight_multiplier()
     _parse_fallback_corner_types()
     
-    for tileset_config in tileset_configs:
-        initializer.initialize_tileset(tileset_config)
+    if includes_tilesets:
+        for tileset_config in tileset_configs:
+            initializer.initialize_tileset(tileset_config)
+    
+    are_models_initialized = true
 
 
 func get_subtile_corner_string(type: int) -> String:
@@ -266,7 +280,7 @@ func _parse_fallback_corner_types() -> void:
     _validate_connection_weight_multipliers()
     _populate_connection_weight_multipliers_with_fallbacks()
 #    _print_fallbacks()
-    _print_connection_weight_multipliers()
+#    _print_connection_weight_multipliers()
 
 
 func _validate_fallback_subtile_corners() -> void:

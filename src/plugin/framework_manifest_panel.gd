@@ -224,5 +224,5 @@ func _update_zebra_stripes() -> void:
 
 
 func update_size(size: Vector2) -> void:
-    self.rect_min_size.x = size.x - 160.0
-    self.rect_min_size.y = size.y - 160.0
+    self.rect_min_size.x = size.x - 144.0
+    self.rect_min_size.y = size.y - 144.0

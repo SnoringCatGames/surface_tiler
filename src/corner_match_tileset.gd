@@ -38,6 +38,8 @@ var corner_type_annotation_key: Dictionary
 
 var _config: Dictionary
 
+var is_initialized := false
+
 var are_45_degree_subtiles_used: bool
 var are_27_degree_subtiles_used: bool
 

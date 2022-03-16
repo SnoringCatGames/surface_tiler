@@ -3,13 +3,20 @@ extends EditorPlugin
 
 
 # FIXME: LEFT OFF HERE: ------------------------------------------
-# - Fix group nesting zebra-stripes:
-#   - Add extra space around group top and bottom rows.
-#   - Reset zebra stripe for each new group indent.
-# - Add Array editor buttons for add / delete.
-# - Remove scrollbars from TextEdit controls.
-# - Add support for arrays and dictionaries in the manifest panel.
-#   - Get this working with the corner-match tileset configs.
+# - Refactor main-panel to be generic for any plugin.
+# - Add logic to adapt the main-screen content depending on which frameworks are present:
+#   - If more than one, then show a tab list across the top for switching between them?
+#   - List all framework manifest editors in a big vertical list with accordions
+#     to collapse each framework.
+# - Add buttons to the main-screen for recalculating/saving tileset
+#   corner-type annotations mappings.
+#   - There will need to be a separate button for each tileset config.
+#   - I will need to do something clever in the schema to support this...
+#   - Maybe allow another type: TYPE_CUSTOM
+#   - Then require that another key is provided with a specific prefix to match
+#     the first key.
+# - Add buttons for resetting all global St state.
+# - Remove the SurfaceTiler config from SquirrelAway.
 # - Add support for configuring default manifest values within the
 #   FrameworkManifestSchema subclass.
 #   - E.g., SurfaceTilerManifestSchema should define default scripts and

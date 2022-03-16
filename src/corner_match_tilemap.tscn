@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/surface_tiler/src/corner_match_tilemap.gd" type="Script" id=1]
+[ext_resource path="res://addons/surfacer/src/tiles/tileset_with_many_angles.tres" type="TileSet" id=2]
 
 [node name="CornerMatchTilemap" type="TileMap"]
+tile_set = ExtResource( 2 )
 format = 1
 script = ExtResource( 1 )

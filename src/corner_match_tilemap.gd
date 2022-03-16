@@ -43,6 +43,12 @@ func _ready() -> void:
         property_list_changed_notify()
     assert(tile_set is CornerMatchTileset)
     
+    # Lazy-initialize tileset state.
+    if !St.are_models_initialized:
+        St.initialize_models()
+    if !tile_set.is_initialized:
+        St.initializer.initialize_tileset(tile_set._config)
+    
     var children := Sc.utils.get_children_by_type(self, CornerMatchInnerTilemap)
     if children.empty():
         inner_tilemap = CornerMatchInnerTilemap.new()
