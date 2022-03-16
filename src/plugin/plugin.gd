@@ -3,14 +3,14 @@ extends EditorPlugin
 
 
 # FIXME: LEFT OFF HERE: ------------------------------------------
+# - Add Array editor buttons for add / delete.
+# - Remove scrollbars from TextEdit controls.
+# - Add support for arrays and dictionaries in the manifest panel.
+#   - Get this working with the corner-match tileset configs.
 # - Add support for configuring default manifest values within the
 #   FrameworkManifestSchema subclass.
 #   - E.g., SurfaceTilerManifestSchema should define default scripts and
 #     tilesets to use based on the versions included in the library.
-# - Create FrameworkManifestController:
-#   - _create_property_controls
-#     - Actually, move this to FrameworkManifestPanel.
-#     - Try to re-use built-in Godot widgets if possible?
 # - Refactor SurfaceTiler manifest to use the new plugin UI instead of GDScript
 #   in SquirrelAway.
 # - Create the multi-plugin scheme:

@@ -9,6 +9,7 @@ var value
 var type: int
 var key
 var property_parent
+var depth: int
 
 
 func set_up(
@@ -16,7 +17,8 @@ func set_up(
         index: int,
         label_width: float,
         control_width: float,
-        padding: float) -> void:
+        padding: float,
+        indent_width: float) -> void:
     var style: StyleBox
     if index % 2 == 0:
         style = StyleBoxEmpty.new()
@@ -32,6 +34,12 @@ func set_up(
     $MarginContainer.add_constant_override("margin_right", padding)
     
     $MarginContainer/HBoxContainer.add_constant_override("separation", padding)
+    
+    if depth > 0:
+        $MarginContainer/HBoxContainer/Indent.rect_min_size.x = \
+                indent_width * depth - padding
+    else:
+        $MarginContainer/HBoxContainer/Indent.queue_free()
     
     $MarginContainer/HBoxContainer/Label.text = key.capitalize()
     $MarginContainer/HBoxContainer/Label.rect_min_size.x = label_width
@@ -65,6 +73,10 @@ func _create_value_editor() -> Control:
                     key,
                     property_parent,
                     type)
+        TYPE_DICTIONARY, \
+        TYPE_ARRAY:
+            # Use an empty placeholder control.
+            return Control.new()
         _:
             Sc.logger.error(
                     "FrameworkManifestPanel._create_property_control_from_value")

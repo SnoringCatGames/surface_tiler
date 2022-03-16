@@ -131,15 +131,11 @@ func _clean_dictionary_values(
                     type,
                     config_key_prefix + key + ">")
         elif type is Array:
-            if type.size() == 1:
-                _clean_array_values(
-                        saved_value,
-                        type[0],
-                        config_key_prefix + key + ">")
-            else:
-                # Do nothing.
-                # The schema doesn't specify any structure for this array.
-                pass
+            assert(type.size() == 1)
+            _clean_array_values(
+                    saved_value,
+                    type[0],
+                    config_key_prefix + key + ">")
 
 
 func _clean_array_values(
