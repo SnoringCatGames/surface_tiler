@@ -116,7 +116,7 @@ func _on_array_item_added(buttons: FrameworkManifestArrayButtons) -> void:
     # Create the data field.
     var new_item = buttons.node.add_array_element()
     # Create the UI.
-    _create_property_controls(buttons.node, buttons.group.body)
+    _create_property_controls(new_item, buttons.group.body)
     _update_zebra_stripes()
     _on_value_changed()
 
