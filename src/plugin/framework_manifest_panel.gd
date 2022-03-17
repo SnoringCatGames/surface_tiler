@@ -50,29 +50,12 @@ func _create_property_controls_from_dictionary(
     for key in properties:
         if key.begins_with(FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX):
             continue
-        elif key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
-            _create_row_for_custom_type(
-                    properties,
-                    key,
-                    parent)
-        else:
-            _create_row_for_dictionary_item(
-                    properties,
-                    key,
-                    parent)
+        _create_row_for_dictionary_item(
+                properties,
+                key,
+                parent)
     
     return row
-
-
-func _create_row_for_custom_type(
-        properties: Dictionary,
-        key: String,
-        parent: Container) -> void:
-    var custom_property: FrameworkManifestCustomProperty = properties[key].new()
-    custom_property.key = key
-    custom_property.property_parent = properties
-    var ui := custom_property.get_ui()
-    parent.add_child(ui)
 
 
 func _create_row_for_dictionary_item(
@@ -144,7 +127,7 @@ func _create_row_for_array_item(
 
 func _create_property_control_from_value(
         value,
-        type: int,
+        type,
         key,
         property_parent,
         control_parent: Container) -> FrameworkManifestRow:

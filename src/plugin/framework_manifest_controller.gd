@@ -71,9 +71,9 @@ func _filter_out_meta_keys(value):
         var copy := {}
         for key in value:
             if key.begins_with(
-                    FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX):
-                continue
-            if key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
+                        FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX) or \
+                    key.begins_with(
+                        FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
                 continue
             copy[key] = _filter_out_meta_keys(value[key])
         return copy
@@ -143,10 +143,6 @@ func _clean_dictionary_property(
         type,
         local_properties: Dictionary,
         config_key_prefix: String) -> void:
-    if key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
-        # This custom-type entry will be handled in the UI.
-        return
-    
     # Ensure an entry exists for this key.
     if !local_properties.has(key):
         local_properties[key] = \

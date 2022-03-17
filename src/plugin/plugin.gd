@@ -54,9 +54,7 @@ func _init() -> void:
 
 
 func _on_framework_initialized() -> void:
-    if is_inside_tree() and !is_instance_valid(St.manifest_controller):
-        St.manifest_controller = FrameworkManifestController.new()
-        St.manifest_controller.set_up(SurfaceTilerManifestSchema.new())
+    if is_inside_tree():
         _set_up()
 
 
@@ -66,6 +64,10 @@ func _enter_tree() -> void:
 
 
 func _set_up() -> void:
+    if !is_instance_valid(St.manifest_controller):
+        St.manifest_controller = FrameworkManifestController.new()
+        St.manifest_controller.set_up(SurfaceTilerManifestSchema.new())
+    
     corner_match_tilemap_inspector_plugin = \
             CornerMatchTilemapInspectorPlugin.new()
     add_inspector_plugin(corner_match_tilemap_inspector_plugin)

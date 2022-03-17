@@ -60,16 +60,18 @@ static func get_default_value(type):
         return {}
     elif type is Array:
         return []
+    elif type is Script:
+        return type
     else:
         return _DEFAULT_VALUES[type]
 
 
 static func get_is_expected_type(
         value,
-        exected_type) -> bool:
-    if exected_type is int:
+        expected_type) -> bool:
+    if expected_type is int:
         var actual_type := get_type(value)
-        match exected_type:
+        match expected_type:
             actual_type:
                 return true
             TYPE_SCRIPT, \
@@ -81,10 +83,12 @@ static func get_is_expected_type(
                 return actual_type == TYPE_INT or actual_type == TYPE_REAL
             _:
                 return false
-    elif exected_type is Dictionary:
+    elif expected_type is Dictionary:
         return value is Dictionary
-    elif exected_type is Array:
+    elif expected_type is Array:
         return value is Array
+    elif expected_type is Script:
+        return value is Script or value == null
     else:
         return false
 
@@ -107,6 +111,8 @@ static func get_type_string(type) -> String:
         type = TYPE_DICTIONARY
     elif type is Array:
         type = TYPE_ARRAY
+    elif type is Script:
+        return "TYPE_CUSTOM"
     else:
         Sc.logger.error("FrameworkManifestSchema.get_type_string")
         return ""

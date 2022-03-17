@@ -12,6 +12,7 @@ var value
 var type
 var key
 var property_parent
+var custom_property: FrameworkManifestCustomProperty
 
 
 func set_up(
@@ -23,22 +24,35 @@ func set_up(
     $MarginContainer.add_constant_override("margin_left", padding)
     $MarginContainer.add_constant_override("margin_right", padding)
     
-    $MarginContainer/HBoxContainer.add_constant_override("separation", padding)
+    $MarginContainer/HBoxContainer \
+            .add_constant_override("separation", padding)
     
-    var text: String
-    if key is int:
-        text = "[%d]" % key
+    if get_is_custom_type():
+        $MarginContainer/HBoxContainer/Label.queue_free()
+        
+        assert(value is Script)
+        custom_property = value.new()
+        custom_property.key = key
+        custom_property.property_parent = property_parent
+        custom_property.parent_control = $MarginContainer/HBoxContainer
+        custom_property.row = self
+        custom_property.connect("changed", self, "emit_signal", ["changed"])
+        custom_property.set_up(label_width, control_width, padding)
     else:
-        text = key.capitalize()
-    
-    $MarginContainer/HBoxContainer/Label.text = text
-    $MarginContainer/HBoxContainer/Label.hint_tooltip = text
-    
-    var value_editor := _create_value_editor()
-    value_editor.size_flags_horizontal = SIZE_EXPAND_FILL
-    value_editor.rect_clip_content = true
-    value_editor.rect_min_size.x = control_width
-    $MarginContainer/HBoxContainer.add_child(value_editor)
+        var text: String
+        if key is int:
+            text = "[%d]" % key
+        else:
+            text = key.capitalize()
+        
+        $MarginContainer/HBoxContainer/Label.text = text
+        $MarginContainer/HBoxContainer/Label.hint_tooltip = text
+        
+        var value_editor := _create_value_editor()
+        value_editor.size_flags_horizontal = SIZE_EXPAND_FILL
+        value_editor.rect_clip_content = true
+        value_editor.rect_min_size.x = control_width
+        $MarginContainer/HBoxContainer.add_child(value_editor)
 
 
 func update_zebra_stripes(index: int) -> int:
@@ -51,6 +65,11 @@ func update_zebra_stripes(index: int) -> int:
     self.add_stylebox_override("panel", style)
     
     return index + 1
+
+
+func get_is_custom_type() -> bool:
+    return key is String and \
+            key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX)
 
 
 func _create_value_editor() -> Control:
