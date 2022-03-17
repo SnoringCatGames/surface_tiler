@@ -3,11 +3,6 @@ extends EditorPlugin
 
 
 # FIXME: LEFT OFF HERE: ------------------------------------------
-# - Add support for configuring default manifest values within the
-#   FrameworkManifestSchema subclass.
-#   - E.g., SurfaceTilerManifestSchema should define default scripts and
-#     tilesets to use based on the versions included in the library.
-# 
 # - Registering:
 #   - Wait for Sc (and any other autoload deps) to exist.
 #     - Configure these as a const array for the framework.
@@ -19,7 +14,6 @@ extends EditorPlugin
 #   - Include a new standard flow for getting framework manifest:
 #     - Call controller.set_up() to instantiate the manifest.
 # 
-# - Remove the SurfaceTiler config from SquirrelAway.
 # - Refactor main-panel to be generic for any plugin.
 # - Add logic to adapt the main-screen content depending on which frameworks are present:
 #   - If more than one, then show a tab list across the top for switching between them?
@@ -28,7 +22,7 @@ extends EditorPlugin
 #   - Create a manifest/config new icon for the main-screen tab.
 #     - Just a simple settings-list/menu/horizontal-lines icon.
 #   - Create clean icons for Scaffolder, Surfacer, SurfaceTiler, SurfaceParser,
-#     and Gooier.
+#     Gooier, and game (use a simple star).
 #     - Create the various different sizes and colors for each of these.
 #     - Show these in the configuration-main-screen accordion headers for each
 #       framework.
@@ -72,6 +66,9 @@ func _set_up() -> void:
     if !is_instance_valid(St.manifest_controller):
         St.manifest_controller = FrameworkManifestController.new()
         St.manifest_controller.set_up(SurfaceTilerManifestSchema.new())
+        
+        # FIXME: --------------------- REMOVE
+        St._register_manifest_TMP(St.manifest)
     
     corner_match_tilemap_inspector_plugin = \
             CornerMatchTilemapInspectorPlugin.new()

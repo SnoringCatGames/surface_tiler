@@ -26,7 +26,7 @@ func set_up(
             "pressed",
             self,
             "_on_button_pressed",
-            [property_parent.tile_set])
+            [node.parent.children.tile_set.value])
     container.add_child(button)
     
     var spacer := Control.new()

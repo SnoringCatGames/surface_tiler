@@ -63,8 +63,6 @@ func _create_property_controls_from_array(
     if is_instance_valid(node.parent):
         row = _create_group_control(node, control_parent)
         control_parent = row.body
-    assert(type.size() == 1)
-    type = type[0]
     
     for child in node.children:
         _create_property_controls(child, control_parent)
@@ -116,9 +114,9 @@ func _on_value_changed() -> void:
 
 func _on_array_item_added(buttons: FrameworkManifestArrayButtons) -> void:
     # Create the data field.
-    var new_item := buttons.node.add_array_element()
+    var new_item = buttons.node.add_array_element()
     # Create the UI.
-    _create_property_controls(node, buttons.group.body)
+    _create_property_controls(buttons.node, buttons.group.body)
     _update_zebra_stripes()
     _on_value_changed()
 

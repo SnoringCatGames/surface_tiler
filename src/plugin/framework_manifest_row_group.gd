@@ -27,7 +27,7 @@ func set_up(
             control_width,
             padding)
     
-    if property_parent is Array:
+    if node.type == TYPE_ARRAY:
         buttons.set_up(
                 node,
                 self,

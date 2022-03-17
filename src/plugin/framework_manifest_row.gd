@@ -32,7 +32,7 @@ func set_up(
         
         assert(node.value is Script and \
                 node.value.get_base_script() == FrameworkManifestCustomProperty)
-        custom_property = value.new()
+        custom_property = node.value.new()
         custom_property.connect("changed", self, "emit_signal", ["changed"])
         custom_property.set_up(
                 node,
@@ -71,11 +71,6 @@ func update_zebra_stripes(index: int) -> int:
 
 
 func _create_value_editor() -> Control:
-    if node.type is Dictionary or \
-            node.type is Array:
-        # Use an empty placeholder control.
-        return Control.new()
-    
     match node.type:
         TYPE_BOOL:
             return _create_bool_editor()
@@ -91,6 +86,10 @@ func _create_value_editor() -> Control:
         FrameworkManifestSchema.TYPE_TILESET, \
         FrameworkManifestSchema.TYPE_RESOURCE:
             return _create_resource_editor()
+        TYPE_DICTIONARY, \
+        TYPE_ARRAY:
+            # Use an empty placeholder control.
+            return Control.new()
         _:
             Sc.logger.error(
                     "FrameworkManifestPanel._create_property_control_from_value")

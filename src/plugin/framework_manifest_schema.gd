@@ -20,9 +20,6 @@ const VALID_TYPES := {
     TYPE_CUSTOM: true,
 }
 
-const _PROPERTY_TYPE_KEY_PREFIX := "$type:"
-const _CUSTOM_TYPE_KEY_PREFIX := "$custom:"
-
 
 func get_framework_display_name() -> String:
     Sc.logger.error(
@@ -83,8 +80,6 @@ static func get_is_expected_type(
         return value is Dictionary
     elif expected_type is Array:
         return value is Array
-    elif expected_type is Script:
-        return value is Script
     else:
         return false
 
@@ -106,7 +101,10 @@ static func get_matches_schema(
 
 static func get_type(value) -> int:
     if value is Script:
-        return TYPE_SCRIPT
+        if value.get_base_script() == FrameworkManifestCustomProperty:
+            return TYPE_CUSTOM
+        else:
+            return TYPE_SCRIPT
     elif value is TileSet:
         return TYPE_TILESET
     elif value is Resource:
@@ -135,6 +133,8 @@ static func get_type_string(type) -> String:
             return "TYPE_TILESET"
         TYPE_RESOURCE:
             return "TYPE_RESOURCE"
+        TYPE_CUSTOM:
+            return "TYPE_CUSTOM"
         _:
             return Sc.utils.get_type_string(type)
 
@@ -147,6 +147,8 @@ static func get_resource_class_name(type: int) -> String:
             return "TileSet"
         TYPE_RESOURCE:
             return "Resource"
+        TYPE_CUSTOM:
+            return "Script"
         _:
             Sc.logger.error("FrameworkManifestSchema.get_resource_class_name")
             return ""

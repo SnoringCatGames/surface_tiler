@@ -20,6 +20,11 @@ extends FrameworkConfig
 
 # --- Constants ---
 
+const _FRAMEWORK_DISPLAY_NAME := "SurfaceTiler"
+const _FRAMEWORK_ADDONS_FOLDER_NAME := "surface_tiler"
+const _AUTO_LOAD_NAME := "St"
+const _AUTO_LOAD_DEPS := []
+
 # FIXME: LEFT OFF HERE: --------------------------------
 var ACCEPTABLE_MATCH_WEIGHT_THRESHOLD := 1.0
 
@@ -124,12 +129,12 @@ var tileset_configs: Array
 # ---
 
 
-func _ready() -> void:
-    assert(has_node("/root/Sc"),
-            "The Sc (Scaffolder) AutoLoad must be declared first.")
-    
-    Sc.logger.on_global_init(self, "St")
-    Sc.register_framework_config(self)
+func _init().(
+        _FRAMEWORK_DISPLAY_NAME,
+        _FRAMEWORK_ADDONS_FOLDER_NAME,
+        _AUTO_LOAD_NAME,
+        _AUTO_LOAD_DEPS) -> void:
+    pass
 
 
 func _amend_manifest(manifest: Dictionary) -> void:
@@ -137,6 +142,13 @@ func _amend_manifest(manifest: Dictionary) -> void:
 
 
 func _register_manifest(manifest: Dictionary) -> void:
+    pass
+
+
+func _register_manifest_TMP(manifest: Dictionary) -> void:
+    # FIXME: LEFT OFF HERE: -------------------------
+    # - Consolidate this _TMP function version with the other.
+
     self.manifest = manifest
     
     self.outer_autotile_name = manifest.outer_autotile_name
@@ -167,9 +179,18 @@ func _register_manifest(manifest: Dictionary) -> void:
         tileset_config.tile_set._config = tileset_config
     
     _parse_subtile_corner_key_values()
+    
+    _instantiate_sub_modules_TMP()
 
 
 func _instantiate_sub_modules() -> void:
+    pass
+
+
+func _instantiate_sub_modules_TMP() -> void:
+    # FIXME: LEFT OFF HERE: -------------------------
+    # - Consolidate this _TMP function version with the other.
+    
     if !supports_runtime_autotiling and \
             Engine.editor_hint:
         return
