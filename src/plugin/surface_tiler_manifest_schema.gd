@@ -3,41 +3,56 @@ class_name SurfaceTilerManifestSchema
 extends FrameworkManifestSchema
 
 
+const _DISPLAY_NAME := "SurfaceTiler"
+
+const _FOLDER_NAME := "surface_tiler"
+
+const _PROPERTIES := {
+    outer_autotile_name = [TYPE_STRING, "autotile"],
+    inner_autotile_name = [TYPE_STRING, "__inner_autotile__"],
+    forces_convex_collision_shapes = [TYPE_BOOL, true],
+    allows_fallback_corner_matches = [TYPE_BOOL, true],
+    supports_runtime_autotiling = [TYPE_BOOL, true],
+    
+    corner_type_annotation_key_path = [TYPE_STRING,
+        "res://addons/surface_tiler/assets/images/corner_type_annotation_key.png"],
+    implicit_quadrant_connection_color = [TYPE_COLOR, Color("ff3333")],
+    
+    annotations_parser_class = [TYPE_SCRIPT, preload(
+        "res://addons/surface_tiler/src/calculators/tileset_annotations_parser.gd")],
+    corner_calculator_class = [TYPE_SCRIPT, preload(
+        "res://addons/surface_tiler/src/calculators/subtile_target_corner_calculator.gd")],
+    quadrant_calculator_class = [TYPE_SCRIPT, preload(
+        "res://addons/surface_tiler/src/calculators/subtile_target_quadrant_calculator.gd")],
+    initializer_class = [TYPE_SCRIPT, preload(
+        "res://addons/surface_tiler/src/calculators/corner_match_tileset_initializer.gd")],
+    shape_calculator_class = [TYPE_SCRIPT, preload(
+        "res://addons/surface_tiler/src/calculators/corner_match_tileset_shape_calculator.gd")],
+    
+    tilesets = [
+        {
+            recalculate_tileset = [TYPE_CUSTOM, RecalculateTilesetCustomProperty],
+            tileset_quadrants_path = [TYPE_STRING,
+                "res://addons/surface_tiler/assets/images/tileset_quadrants.png"],
+            tileset_corner_type_annotations_path = [TYPE_STRING,
+                "res://addons/surface_tiler/assets/images/tileset_corner_type_annotations.png"],
+            tile_set = [TYPE_TILESET, null],
+            quadrant_size = [TYPE_INT, 16],
+            subtile_collision_margin = [TYPE_REAL, 3.0],
+            are_45_degree_subtiles_used = [TYPE_BOOL, true],
+            are_27_degree_subtiles_used = [TYPE_BOOL, false],
+        },
+    ],
+}
+
+
 func get_framework_display_name() -> String:
-    return "SurfaceTiler"
+    return _DISPLAY_NAME
 
 
 func get_framework_folder_name() -> String:
-    return "surface_tiler"
+    return _FOLDER_NAME
 
 
 func get_properties() -> Dictionary:
-    return {
-        outer_autotile_name = TYPE_STRING,
-        inner_autotile_name = TYPE_STRING,
-        forces_convex_collision_shapes = TYPE_BOOL,
-        allows_fallback_corner_matches = TYPE_BOOL,
-        supports_runtime_autotiling = TYPE_BOOL,
-        
-        corner_type_annotation_key_path = TYPE_STRING,
-        implicit_quadrant_connection_color = TYPE_COLOR,
-        
-        annotations_parser_class = TYPE_SCRIPT,
-        corner_calculator_class = TYPE_SCRIPT,
-        quadrant_calculator_class = TYPE_SCRIPT,
-        initializer_class = TYPE_SCRIPT,
-        shape_calculator_class = TYPE_SCRIPT,
-        
-        tilesets = [
-            {
-                "$custom:recalculate_tileset": RecalculateTilesetCustomProperty,
-                tileset_quadrants_path = TYPE_STRING,
-                tileset_corner_type_annotations_path = TYPE_STRING,
-                tile_set = TYPE_TILESET,
-                quadrant_size = TYPE_INT,
-                subtile_collision_margin = TYPE_REAL,
-                are_45_degree_subtiles_used = TYPE_BOOL,
-                are_27_degree_subtiles_used = TYPE_BOOL,
-            },
-        ],
-    }
+    return _PROPERTIES

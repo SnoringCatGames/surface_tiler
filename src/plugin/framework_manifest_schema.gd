@@ -6,16 +6,18 @@ extends Reference
 const TYPE_SCRIPT := 1001
 const TYPE_TILESET := 1002
 const TYPE_RESOURCE := 1003
+const TYPE_CUSTOM := 1004
 
-const _DEFAULT_VALUES := {
-    TYPE_BOOL: false,
-    TYPE_STRING: "",
-    TYPE_INT: -1,
-    TYPE_REAL: INF,
-    TYPE_COLOR: Color.black,
-    TYPE_SCRIPT: null,
-    TYPE_TILESET: null,
-    TYPE_RESOURCE: null,
+const VALID_TYPES := {
+    TYPE_BOOL: true,
+    TYPE_STRING: true,
+    TYPE_INT: true,
+    TYPE_REAL: true,
+    TYPE_COLOR: true,
+    TYPE_SCRIPT: true,
+    TYPE_TILESET: true,
+    TYPE_RESOURCE: true,
+    TYPE_CUSTOM: true,
 }
 
 const _PROPERTY_TYPE_KEY_PREFIX := "$type:"
@@ -48,22 +50,16 @@ func get_manifest_path() -> String:
     return "res://addons/%s/manifest.json" % folder_name
 
 
-static func get_allowed_manifest_schema_types_set() -> Dictionary:
-    var set := {}
-    for type in _DEFAULT_VALUES:
-        set[type] = true
-    return set
-
-
-static func get_default_value(type):
-    if type is Dictionary:
+static func get_default_value(schema):
+    if schema is Dictionary:
         return {}
-    elif type is Array:
-        return []
-    elif type is Script:
-        return type
+    elif schema is Array:
+        if schema.size() == 1:
+            return []
+        else:
+            return schema[1]
     else:
-        return _DEFAULT_VALUES[type]
+        Sc.logger.error("FrameworkManifestSchema.get_default_value")
 
 
 static func get_is_expected_type(
@@ -88,8 +84,23 @@ static func get_is_expected_type(
     elif expected_type is Array:
         return value is Array
     elif expected_type is Script:
-        return value is Script or value == null
+        return value is Script
     else:
+        return false
+
+
+static func get_matches_schema(
+        value,
+        schema) -> bool:
+    if schema is Dictionary:
+        return value is Dictionary
+    elif schema is Array:
+        if schema.size() == 1:
+            return value is Array
+        else:
+            return get_is_expected_type(value, schema[0])
+    else:
+        Sc.logger.error("FrameworkManifestSchema.get_matches_schema")
         return false
 
 

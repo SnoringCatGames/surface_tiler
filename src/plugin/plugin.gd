@@ -3,14 +3,22 @@ extends EditorPlugin
 
 
 # FIXME: LEFT OFF HERE: ------------------------------------------
-# - Add buttons to the main-screen for recalculating/saving tileset
-#   corner-type annotations mappings.
-#   - There will need to be a separate button for each tileset config.
-#   - I will need to do something clever in the schema to support this...
-#   - Maybe allow another type: TYPE_CUSTOM
-#   - Then require that another key is provided with a specific prefix to match
-#     the first key.
-# - Add buttons for resetting all global St state.
+# - Add support for configuring default manifest values within the
+#   FrameworkManifestSchema subclass.
+#   - E.g., SurfaceTilerManifestSchema should define default scripts and
+#     tilesets to use based on the versions included in the library.
+# 
+# - Registering:
+#   - Wait for Sc (and any other autoload deps) to exist.
+#     - Configure these as a const array for the framework.
+#   - When Sc exists, we know basic logging and utils are available.
+#   - Register self framework with Sc.
+#   - Debounce framework-registrations with 0.05.
+#     - After that, trigger complete re-initialization of all frameworks.
+#       - Except for logging instance within Sc.
+#   - Include a new standard flow for getting framework manifest:
+#     - Call controller.set_up() to instantiate the manifest.
+# 
 # - Remove the SurfaceTiler config from SquirrelAway.
 # - Refactor main-panel to be generic for any plugin.
 # - Add logic to adapt the main-screen content depending on which frameworks are present:
@@ -24,10 +32,7 @@ extends EditorPlugin
 #     - Create the various different sizes and colors for each of these.
 #     - Show these in the configuration-main-screen accordion headers for each
 #       framework.
-# - Add support for configuring default manifest values within the
-#   FrameworkManifestSchema subclass.
-#   - E.g., SurfaceTilerManifestSchema should define default scripts and
-#     tilesets to use based on the versions included in the library.
+# - Add a button for resetting all global manifest and autoload state.
 # - Refactor SurfaceTiler manifest to use the new plugin UI instead of GDScript
 #   in SquirrelAway.
 # - Create the multi-plugin scheme:

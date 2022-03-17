@@ -21,153 +21,82 @@ func _ready() -> void:
     
     Sc.utils.clear_children($VBoxContainer)
     
-    _create_property_controls_from_dictionary(
-            St.manifest_controller.properties,
-            "",
+    _create_property_controls(
+            St.manifest_controller.root,
             $VBoxContainer)
     
     _update_zebra_stripes()
 
 
+func _create_property_controls(
+        node: FrameworkManifestEditorNode,
+        control_parent: Container) -> void:
+    match node.type:
+        TYPE_DICTIONARY:
+            _create_property_controls_from_dictionary(node, control_parent)
+        TYPE_ARRAY:
+            _create_property_controls_from_array(node, control_parent)
+        _:
+            _create_property_control_from_value(node, control_parent)
+
+
 func _create_property_controls_from_dictionary(
-        properties: Dictionary,
-        parent_key,
-        parent: Container) -> FrameworkManifestRowGroup:
+        node: FrameworkManifestEditorNode,
+        control_parent: Container) -> FrameworkManifestRowGroup:
     # Create the Dictionary row / label.
     var row: FrameworkManifestRowGroup
-    var is_root: bool = \
-            parent_key is String and \
-            parent_key == ""
-    if !is_root:
-        row = _create_group_control(
-                properties,
-                properties,
-                parent_key,
-                properties,
-                parent)
-        parent = row.body
+    if is_instance_valid(node.parent):
+        row = _create_group_control(node, control_parent)
+        control_parent = row.body
     
-    for key in properties:
-        if key.begins_with(FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX):
-            continue
-        _create_row_for_dictionary_item(
-                properties,
-                key,
-                parent)
+    for key in node.children:
+        _create_property_controls(node.children[key], control_parent)
     
     return row
-
-
-func _create_row_for_dictionary_item(
-        properties: Dictionary,
-        key: String,
-        parent: Container) -> void:
-    var value = properties[key]
-    var type = properties[
-            FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX + key]
-    if value is Dictionary:
-        _create_property_controls_from_dictionary(
-                value, key, parent)
-    elif value is Array:
-        _create_property_controls_from_array(
-                value, type, key, parent)
-    else:
-        _create_property_control_from_value(
-                value, type, key, properties, parent)
 
 
 func _create_property_controls_from_array(
-        properties: Array,
-        type,
-        parent_key,
-        parent: Container) -> FrameworkManifestRowGroup:
+        node: FrameworkManifestEditorNode,
+        control_parent: Container) -> FrameworkManifestRowGroup:
     # Create the Array row / label
     var row: FrameworkManifestRowGroup
-    var is_root: bool = \
-            parent_key is String and \
-            parent_key == ""
-    if !is_root:
-        row = _create_group_control(
-                properties,
-                type,
-                parent_key,
-                properties,
-                parent)
-        parent = row.body
+    if is_instance_valid(node.parent):
+        row = _create_group_control(node, control_parent)
+        control_parent = row.body
     assert(type.size() == 1)
     type = type[0]
     
-    for i in properties.size():
-        _create_row_for_array_item(
-                properties,
-                i,
-                type,
-                parent)
+    for child in node.children:
+        _create_property_controls(child, control_parent)
     
     return row
 
 
-func _create_row_for_array_item(
-        properties: Array,
-        i: int,
-        type,
-        parent: Container) -> void:
-    var value = properties[i]
-    var row
-    if type is Dictionary:
-        row = _create_property_controls_from_dictionary(
-                value, i, parent)
-    elif type is Array:
-        row = _create_property_controls_from_array(
-                value, type, i, parent)
-    else:
-        row = _create_property_control_from_value(
-                value, type, i, properties, parent)
-
-
 func _create_property_control_from_value(
-        value,
-        type,
-        key,
-        property_parent,
+        node: FrameworkManifestEditorNode,
         control_parent: Container) -> FrameworkManifestRow:
     var row: FrameworkManifestRow = \
             Sc.utils.add_scene(control_parent, _ROW_SCENE)
-    
-    row.value = value
-    row.type = type
-    row.key = key
-    row.property_parent = property_parent
-    
     row.set_up(
+            node,
             _LABEL_WIDTH,
             _CONTROL_WIDTH,
             _PADDING)
     row.connect("changed", self, "_on_value_changed")
-    
     return row
 
 
 func _create_group_control(
-        value,
-        type,
-        key,
-        property_parent,
+        node: FrameworkManifestEditorNode,
         control_parent: Container) -> FrameworkManifestRowGroup:
     var row: FrameworkManifestRowGroup = \
             Sc.utils.add_scene(control_parent, _ROW_GROUP_SCENE)
-    
-    row.value = value
-    row.type = type
-    row.key = key
-    row.property_parent = property_parent
-    
     row.set_up(
+            node,
             _LABEL_WIDTH,
             _CONTROL_WIDTH,
             _PADDING)
-    
-    if property_parent is Array:
+    if node.type == TYPE_ARRAY:
         row.buttons.connect(
                 "added",
                 self,
@@ -178,7 +107,6 @@ func _create_group_control(
                 self,
                 "_on_array_item_deleted",
                 [row.buttons])
-    
     return row
 
 
@@ -187,29 +115,16 @@ func _on_value_changed() -> void:
 
 
 func _on_array_item_added(buttons: FrameworkManifestArrayButtons) -> void:
-    var body: Container = buttons.group.body
-    var i := body.get_child_count()
-    var type = buttons.type[0]
-    
     # Create the data field.
-    St.manifest_controller._clean_array_element(
-            i,
-            type,
-            buttons.property_parent)
-    
+    var new_item := buttons.node.add_array_element()
     # Create the UI.
-    _create_row_for_array_item(
-            buttons.property_parent,
-            i,
-            type,
-            body)
-    
+    _create_property_controls(node, buttons.group.body)
     _update_zebra_stripes()
     _on_value_changed()
 
 
 func _on_array_item_deleted(buttons: FrameworkManifestArrayButtons) -> void:
-    buttons.property_parent.pop_back()
+    buttons.node.children.pop_back()
     buttons.group.body.get_children().back().queue_free()
     _update_zebra_stripes()
     _on_value_changed()

@@ -5,13 +5,15 @@ extends Reference
 
 signal changed
 
-var property_parent
-var key
-var parent_control: Control
+var node: FrameworkManifestEditorNode
 var row
+var parent_control: Control
 
 
 func set_up(
+        node: FrameworkManifestEditorNode,
+        row,
+        parent_control: Control,
         label_width: float,
         control_width: float,
         padding: float) -> void:

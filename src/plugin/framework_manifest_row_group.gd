@@ -3,39 +3,34 @@ class_name FrameworkManifestRowGroup
 extends VBoxContainer
 
 
+var node: FrameworkManifestEditorNode
+
 var header: FrameworkManifestRow
 var body: Container
 var buttons: FrameworkManifestArrayButtons
 
-var value
-var type
-var key
-var property_parent
-
 
 func set_up(
+        node: FrameworkManifestEditorNode,
         label_width: float,
         control_width: float,
         padding: float) -> void:
+    self.node = node
+    
     header = $HBoxContainer2/Header
     body = $HBoxContainer/Body
     buttons = $HBoxContainer2/Buttons
     
-    header.value = value
-    header.type = type
-    header.key = key
-    header.property_parent = property_parent
-    
     header.set_up(
-        label_width,
-        control_width,
-        padding)
+            node,
+            label_width,
+            control_width,
+            padding)
     
     if property_parent is Array:
-        buttons.group = self
-        buttons.type = type
-        buttons.property_parent = property_parent
         buttons.set_up(
+                node,
+                self,
                 label_width,
                 control_width,
                 padding)

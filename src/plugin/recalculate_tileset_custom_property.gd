@@ -4,9 +4,16 @@ extends FrameworkManifestCustomProperty
 
 
 func set_up(
+        node: FrameworkManifestEditorNode,
+        row,
+        parent_control: Control,
         label_width: float,
         control_width: float,
         padding: float) -> void:
+    self.node = node
+    self.row = row
+    self.parent_control = parent_control
+    
     var container := HBoxContainer.new()
     container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     parent_control.add_child(container)

@@ -8,17 +8,17 @@ signal changed
 const _HIDE_SCROLL_BARS_THEME := \
         preload("res://addons/surface_tiler/src/plugin/hide_scroll_bars.tres")
 
-var value
-var type
-var key
-var property_parent
+var node: FrameworkManifestEditorNode
 var custom_property: FrameworkManifestCustomProperty
 
 
 func set_up(
+        node: FrameworkManifestEditorNode,
         label_width: float,
         control_width: float,
         padding: float) -> void:
+    self.node = node
+    
     $MarginContainer.add_constant_override("margin_top", padding)
     $MarginContainer.add_constant_override("margin_bottom", padding)
     $MarginContainer.add_constant_override("margin_left", padding)
@@ -27,23 +27,26 @@ func set_up(
     $MarginContainer/HBoxContainer \
             .add_constant_override("separation", padding)
     
-    if get_is_custom_type():
+    if node.type == FrameworkManifestSchema.TYPE_CUSTOM:
         $MarginContainer/HBoxContainer/Label.queue_free()
         
-        assert(value is Script)
+        assert(node.value is Script and \
+                node.value.get_base_script() == FrameworkManifestCustomProperty)
         custom_property = value.new()
-        custom_property.key = key
-        custom_property.property_parent = property_parent
-        custom_property.parent_control = $MarginContainer/HBoxContainer
-        custom_property.row = self
         custom_property.connect("changed", self, "emit_signal", ["changed"])
-        custom_property.set_up(label_width, control_width, padding)
+        custom_property.set_up(
+                node,
+                self,
+                $MarginContainer/HBoxContainer,
+                label_width,
+                control_width,
+                padding)
     else:
         var text: String
-        if key is int:
-            text = "[%d]" % key
+        if node.key is int:
+            text = "[%d]" % node.key
         else:
-            text = key.capitalize()
+            text = node.key.capitalize()
         
         $MarginContainer/HBoxContainer/Label.text = text
         $MarginContainer/HBoxContainer/Label.hint_tooltip = text
@@ -67,147 +70,108 @@ func update_zebra_stripes(index: int) -> int:
     return index + 1
 
 
-func get_is_custom_type() -> bool:
-    return key is String and \
-            key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX)
-
-
 func _create_value_editor() -> Control:
-    if type is Dictionary or \
-            type is Array:
+    if node.type is Dictionary or \
+            node.type is Array:
         # Use an empty placeholder control.
         return Control.new()
     
-    match type:
+    match node.type:
         TYPE_BOOL:
-            return _create_bool_editor(value, key, property_parent)
+            return _create_bool_editor()
         TYPE_INT:
-            return _create_int_editor(value, key, property_parent)
+            return _create_int_editor()
         TYPE_REAL:
-            return _create_float_editor(value, key, property_parent)
+            return _create_float_editor()
         TYPE_STRING:
-            return _create_string_editor(value, key, property_parent)
+            return _create_string_editor()
         TYPE_COLOR:
-            return _create_color_editor(value, key, property_parent)
+            return _create_color_editor()
         FrameworkManifestSchema.TYPE_SCRIPT, \
         FrameworkManifestSchema.TYPE_TILESET, \
         FrameworkManifestSchema.TYPE_RESOURCE:
-            return _create_resource_editor(
-                    value,
-                    key,
-                    property_parent,
-                    type)
+            return _create_resource_editor()
         _:
             Sc.logger.error(
                     "FrameworkManifestPanel._create_property_control_from_value")
             return null
 
 
-func _create_bool_editor(
-        value: bool,
-        key,
-        property_parent) -> CheckBox:
+func _create_bool_editor() -> CheckBox:
     var control := CheckBox.new()
-    control.pressed = value
+    control.pressed = node.value
     control.connect(
             "toggled",
             self,
-            "_on_value_changed",
-            [key, property_parent])
+            "_on_value_changed")
     return control
 
 
-func _create_int_editor(
-        value: int,
-        key,
-        property_parent) -> SpinBox:
+func _create_int_editor() -> SpinBox:
     var control := SpinBox.new()
     control.step = 1.0
     control.rounded = true
-    control.value = value
+    control.value = node.value
     control.connect(
             "value_changed",
             self,
-            "_on_value_changed",
-            [key, property_parent])
+            "_on_value_changed")
     return control
 
 
-func _create_float_editor(
-        value: float,
-        key,
-        property_parent) -> SpinBox:
+func _create_float_editor() -> SpinBox:
     var control := SpinBox.new()
     control.step = 0.0
     control.rounded = false
-    control.value = value
+    control.value = node.value
     control.connect(
             "value_changed",
             self,
-            "_on_value_changed",
-            [key, property_parent])
+            "_on_value_changed")
     return control
 
 
-func _create_string_editor(
-        value: String,
-        key,
-        property_parent) -> TextEdit:
+func _create_string_editor() -> TextEdit:
     var control := TextEdit.new()
-    control.text = value
+    control.text = node.value
     control.theme = _HIDE_SCROLL_BARS_THEME
-    control.hint_tooltip = value
+    control.hint_tooltip = node.value
     control.connect(
             "text_changed",
             self,
             "_on_string_changed",
-            [control, key, property_parent])
+            [control])
     return control
 
 
-func _create_color_editor(
-        value: Color,
-        key,
-        property_parent) -> ColorPickerButton:
+func _create_color_editor() -> ColorPickerButton:
     var control := ColorPickerButton.new()
-    control.color = value
+    control.color = node.value
     control.connect(
             "color_changed",
             self,
-            "_on_value_changed",
-            [key, property_parent])
+            "_on_value_changed")
     return control
 
 
-func _create_resource_editor(
-        value: Resource,
-        key,
-        property_parent,
-        resource_type := -1) -> EditorResourcePicker:
+func _create_resource_editor() -> EditorResourcePicker:
     var control := EditorResourcePicker.new()
-    control.edited_resource = value
+    control.edited_resource = node.value
     control.base_type = \
-            FrameworkManifestSchema.get_resource_class_name(resource_type)
+            FrameworkManifestSchema.get_resource_class_name(node.type)
     control.connect(
             "resource_changed",
             self,
-            "_on_value_changed",
-            [key, property_parent])
+            "_on_value_changed")
     return control
 
 
-func _on_value_changed(
-        value,
-        key,
-        property_parent) -> void:
-    property_parent[key] = value
+func _on_value_changed(value) -> void:
+    node.value = value
     emit_signal("changed")
 
 
-func _on_string_changed(
-        control: TextEdit,
-        key,
-        property_parent) -> void:
-    property_parent[key] = control.text
+func _on_string_changed(control: TextEdit) -> void:
+    node.value = control.text
     control.hint_tooltip = control.text
     emit_signal("changed")

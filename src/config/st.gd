@@ -132,12 +132,12 @@ func _ready() -> void:
     Sc.register_framework_config(self)
 
 
-func _amend_app_manifest(app_manifest: Dictionary) -> void:
+func _amend_manifest(manifest: Dictionary) -> void:
     pass
 
 
-func _register_app_manifest(app_manifest: Dictionary) -> void:
-    self.manifest = app_manifest.surface_tiler_manifest
+func _register_manifest(manifest: Dictionary) -> void:
+    self.manifest = manifest
     
     self.outer_autotile_name = manifest.outer_autotile_name
     if manifest.has("inner_autotile_name"):

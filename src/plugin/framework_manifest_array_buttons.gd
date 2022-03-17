@@ -6,15 +6,19 @@ extends PanelContainer
 signal added
 signal deleted
 
-var type
-var property_parent: Array
+var node: FrameworkManifestEditorNode
 var group
 
 
 func set_up(
+        node: FrameworkManifestEditorNode,
+        group,
         label_width: float,
         control_width: float,
         padding: float) -> void:
+    self.node = node
+    self.group = group
+    
     $MarginContainer.add_constant_override("margin_top", padding)
     $MarginContainer.add_constant_override("margin_bottom", padding)
     $MarginContainer.add_constant_override("margin_left", padding)
