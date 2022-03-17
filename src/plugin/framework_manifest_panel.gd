@@ -68,12 +68,11 @@ func _create_row_for_custom_type(
         properties: Dictionary,
         key: String,
         parent: Container) -> void:
-    # FIXME: LEFT OFF HERE: -------------------------------------
-    # - Instance the script instance.
-    # - Set key field.
-    # - Set property_parent field.
-    # - Also add UI injection logic in panel.
-    pass
+    var custom_property: FrameworkManifestCustomProperty = properties[key].new()
+    custom_property.key = key
+    custom_property.property_parent = properties
+    var ui := custom_property.get_ui()
+    parent.add_child(ui)
 
 
 func _create_row_for_dictionary_item(
