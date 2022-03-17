@@ -3,11 +3,6 @@ extends EditorPlugin
 
 
 # FIXME: LEFT OFF HERE: ------------------------------------------
-# - Refactor main-panel to be generic for any plugin.
-# - Add logic to adapt the main-screen content depending on which frameworks are present:
-#   - If more than one, then show a tab list across the top for switching between them?
-#   - List all framework manifest editors in a big vertical list with accordions
-#     to collapse each framework.
 # - Add buttons to the main-screen for recalculating/saving tileset
 #   corner-type annotations mappings.
 #   - There will need to be a separate button for each tileset config.
@@ -17,6 +12,18 @@ extends EditorPlugin
 #     the first key.
 # - Add buttons for resetting all global St state.
 # - Remove the SurfaceTiler config from SquirrelAway.
+# - Refactor main-panel to be generic for any plugin.
+# - Add logic to adapt the main-screen content depending on which frameworks are present:
+#   - If more than one, then show a tab list across the top for switching between them?
+#   - List all framework manifest editors in a big vertical list with accordions
+#     to collapse each framework.
+#   - Create a manifest/config new icon for the main-screen tab.
+#     - Just a simple settings-list/menu/horizontal-lines icon.
+#   - Create clean icons for Scaffolder, Surfacer, SurfaceTiler, SurfaceParser,
+#     and Gooier.
+#     - Create the various different sizes and colors for each of these.
+#     - Show these in the configuration-main-screen accordion headers for each
+#       framework.
 # - Add support for configuring default manifest values within the
 #   FrameworkManifestSchema subclass.
 #   - E.g., SurfaceTilerManifestSchema should define default scripts and

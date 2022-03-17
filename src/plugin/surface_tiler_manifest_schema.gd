@@ -30,6 +30,7 @@ func get_properties() -> Dictionary:
         
         tilesets = [
             {
+                "$custom:recalculate_tileset": RecalculateTilesetCustomProperty,
                 tileset_quadrants_path = TYPE_STRING,
                 tileset_corner_type_annotations_path = TYPE_STRING,
                 tile_set = TYPE_TILESET,

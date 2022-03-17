@@ -3,8 +3,6 @@ class_name FrameworkManifestController
 extends Reference
 
 
-const _PROPERTY_TYPE_KEY_PREFIX := "$type:"
-
 var schema: FrameworkManifestSchema
 
 var properties: Dictionary
@@ -36,10 +34,16 @@ func _validate_schema_recursively(
     
     if schema_value is Dictionary:
         for key in schema_value:
-            _validate_schema_recursively(
-                    schema_value[key],
-                    valid_schema_types,
-                    prefix + key + ">")
+            var value = schema_value[key]
+            if key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
+                assert(value is Script and \
+                        value.get_base_script() == \
+                            FrameworkManifestCustomProperty)
+            else:
+                _validate_schema_recursively(
+                        value,
+                        valid_schema_types,
+                        prefix + key + ">")
     elif schema_value is Array:
         assert(schema_value.size() == 1,
                 "Manifest schema arrays must be of size 1: %s" % prefix)
@@ -56,25 +60,28 @@ func _load() -> void:
 
 func save() -> void:
     Sc.json.save_file(
-            _filter_type_keys(properties),
+            _filter_out_meta_keys(properties),
             schema.get_manifest_path(),
             true,
             true)
 
 
-func _filter_type_keys(value):
+func _filter_out_meta_keys(value):
     if value is Dictionary:
         var copy := {}
         for key in value:
-            if key.begins_with(_PROPERTY_TYPE_KEY_PREFIX):
+            if key.begins_with(
+                    FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX):
                 continue
-            copy[key] = _filter_type_keys(value[key])
+            if key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
+                continue
+            copy[key] = _filter_out_meta_keys(value[key])
         return copy
     elif value is Array:
         var copy := []
         copy.resize(value.size())
         for i in value.size():
-            copy[i] = _filter_type_keys(value[i])
+            copy[i] = _filter_out_meta_keys(value[i])
         return copy
     else:
         return value
@@ -136,6 +143,10 @@ func _clean_dictionary_property(
         type,
         local_properties: Dictionary,
         config_key_prefix: String) -> void:
+    if key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
+        # This custom-type entry will be handled in the UI.
+        return
+    
     # Ensure an entry exists for this key.
     if !local_properties.has(key):
         local_properties[key] = \
@@ -161,7 +172,8 @@ func _clean_dictionary_property(
     # Record an additional entry to indicate the value's type.
     # (This is needed for rendering the correct editor controls for null
     # values.)
-    local_properties[_PROPERTY_TYPE_KEY_PREFIX + key] = type
+    local_properties[
+            FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX + key] = type
     
     # Create children values.
     if type is Dictionary:

@@ -48,15 +48,32 @@ func _create_property_controls_from_dictionary(
         parent = row.body
     
     for key in properties:
-        if key.begins_with(
-                FrameworkManifestController._PROPERTY_TYPE_KEY_PREFIX):
+        if key.begins_with(FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX):
             continue
-        _create_row_for_dictionary_item(
-                properties,
-                key,
-                parent)
+        elif key.begins_with(FrameworkManifestSchema._CUSTOM_TYPE_KEY_PREFIX):
+            _create_row_for_custom_type(
+                    properties,
+                    key,
+                    parent)
+        else:
+            _create_row_for_dictionary_item(
+                    properties,
+                    key,
+                    parent)
     
     return row
+
+
+func _create_row_for_custom_type(
+        properties: Dictionary,
+        key: String,
+        parent: Container) -> void:
+    # FIXME: LEFT OFF HERE: -------------------------------------
+    # - Instance the script instance.
+    # - Set key field.
+    # - Set property_parent field.
+    # - Also add UI injection logic in panel.
+    pass
 
 
 func _create_row_for_dictionary_item(
@@ -65,7 +82,7 @@ func _create_row_for_dictionary_item(
         parent: Container) -> void:
     var value = properties[key]
     var type = properties[
-            FrameworkManifestController._PROPERTY_TYPE_KEY_PREFIX + key]
+            FrameworkManifestSchema._PROPERTY_TYPE_KEY_PREFIX + key]
     if value is Dictionary:
         _create_property_controls_from_dictionary(
                 value, key, parent)

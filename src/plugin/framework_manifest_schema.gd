@@ -18,6 +18,9 @@ const _DEFAULT_VALUES := {
     TYPE_RESOURCE: null,
 }
 
+const _PROPERTY_TYPE_KEY_PREFIX := "$type:"
+const _CUSTOM_TYPE_KEY_PREFIX := "$custom:"
+
 
 func get_framework_display_name() -> String:
     Sc.logger.error(
