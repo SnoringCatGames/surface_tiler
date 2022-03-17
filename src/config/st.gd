@@ -171,9 +171,8 @@ func _register_manifest_TMP(manifest: Dictionary) -> void:
         assert(tileset_config.tile_set is CornerMatchTileset)
         assert(tileset_config.tileset_quadrants_path is String)
         assert(tileset_config.tileset_corner_type_annotations_path is String)
-        assert(tileset_config.quadrant_size is int)
-        assert(tileset_config.subtile_collision_margin is float or \
-                tileset_config.subtile_collision_margin is int)
+        assert(Sc.utils.is_num(tileset_config.quadrant_size))
+        assert(Sc.utils.is_num(tileset_config.subtile_collision_margin))
         assert(tileset_config.are_45_degree_subtiles_used is bool)
         assert(tileset_config.are_27_degree_subtiles_used is bool)
         tileset_config.tile_set._config = tileset_config
@@ -319,7 +318,7 @@ func _validate_fallback_subtile_corners() -> void:
                     fallback_multipliers.size() == 4 or \
                     fallback_multipliers.size() == 6)
             for multiplier in fallback_multipliers:
-                assert(multiplier is float)
+                assert(Sc.utils.is_num(multiplier))
                 assert(multiplier >= 0.0 and multiplier <= 1.0)
 
 
@@ -505,12 +504,12 @@ func _record_transitive_fallbacks_recursively(
 
 func _validate_connection_weight_multipliers() -> void:
     for value in CornerConnectionWeightMultipliers.MULTIPLIERS.values():
-        assert(value is float or value is Dictionary)
+        assert(Sc.utils.is_num(value) or value is Dictionary)
         if value is Dictionary:
-            assert(value.has("top") and value.top is float)
-            assert(value.has("bottom") and value.bottom is float)
-            assert(value.has("side") and value.side is float)
-            assert(value.has("diagonal") and value.diagonal is float)
+            assert(value.has("top") and Sc.utils.is_num(value.top))
+            assert(value.has("bottom") and Sc.utils.is_num(value.bottom))
+            assert(value.has("side") and Sc.utils.is_num(value.side))
+            assert(value.has("diagonal") and Sc.utils.is_num(value.diagonal))
             assert(value.top > 0.0 and value.top <= 1.0)
             assert(value.bottom > 0.0 and value.bottom <= 1.0)
             assert(value.side > 0.0 and value.side <= 1.0)

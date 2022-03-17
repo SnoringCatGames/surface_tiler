@@ -26,7 +26,7 @@ func load_from_manifest(manifest) -> void:
             _load_from_manifest_array(manifest)
         else:
             type = schema[0]
-            value = schema[1]
+            value = manifest
     else:
         Sc.logger.error("FrameworkManifestEditorNode.load_from_manifest")
 
