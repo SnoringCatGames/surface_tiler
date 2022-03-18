@@ -1,6 +1,6 @@
 tool
-class_name SurfaceTilerManifestSchema
-extends FrameworkManifestSchema
+class_name SurfaceTilerSchema
+extends FrameworkSchema
 
 
 const _DISPLAY_NAME := "Surface Tiler"

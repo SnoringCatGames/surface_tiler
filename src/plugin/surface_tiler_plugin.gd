@@ -3,7 +3,7 @@ class_name SurfaceTilerPlugin
 extends FrameworkPlugin
 
 
-const _SCHEMA_CLASS := SurfaceTilerManifestSchema
+const _SCHEMA_CLASS := SurfaceTilerSchema
 
 var _corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
 

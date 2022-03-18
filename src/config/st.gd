@@ -1,5 +1,5 @@
 tool
-extends FrameworkConfig
+extends FrameworkGlobal
 ## FIXME: LEFT OFF HERE: ------------- Update docs.
 ## -   This is a global singleton that defines a bunch of Surfacer
 ##     parameters.[br]
@@ -20,7 +20,7 @@ extends FrameworkConfig
 
 # --- Constants ---
 
-const _SCHEMA_CLASS := SurfaceTilerManifestSchema
+const _SCHEMA_CLASS := SurfaceTilerSchema
 
 # FIXME: LEFT OFF HERE: --------------------------------
 var ACCEPTABLE_MATCH_WEIGHT_THRESHOLD := 1.0
