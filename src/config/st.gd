@@ -20,10 +20,7 @@ extends FrameworkConfig
 
 # --- Constants ---
 
-const _FRAMEWORK_DISPLAY_NAME := "SurfaceTiler"
-const _FRAMEWORK_ADDONS_FOLDER_NAME := "surface_tiler"
-const _AUTO_LOAD_NAME := "St"
-const _AUTO_LOAD_DEPS := []
+const _SCHEMA_CLASS := SurfaceTilerManifestSchema
 
 # FIXME: LEFT OFF HERE: --------------------------------
 var ACCEPTABLE_MATCH_WEIGHT_THRESHOLD := 1.0
@@ -129,11 +126,7 @@ var tileset_configs: Array
 # ---
 
 
-func _init().(
-        _FRAMEWORK_DISPLAY_NAME,
-        _FRAMEWORK_ADDONS_FOLDER_NAME,
-        _AUTO_LOAD_NAME,
-        _AUTO_LOAD_DEPS) -> void:
+func _init().(_SCHEMA_CLASS) -> void:
     pass
 
 

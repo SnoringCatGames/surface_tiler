@@ -3,19 +3,12 @@ class_name SurfaceTilerPlugin
 extends FrameworkPlugin
 
 
-const _DISPLAY_NAME := "SurfaceTiler"
-const _ICON_DIRECTORY_PATH := "res://addons/surface_tiler/assets/images/"
-const _AUTO_LOAD_NAME := "St"
-const _AUTO_LOAD_PATH := "res://addons/surface_tiler/src/config/st.gd"
+const _SCHEMA_CLASS := SurfaceTilerManifestSchema
 
 var _corner_match_tilemap_inspector_plugin: CornerMatchTilemapInspectorPlugin
 
 
-func _init().(
-        _DISPLAY_NAME,
-        _ICON_DIRECTORY_PATH,
-        _AUTO_LOAD_NAME,
-        _AUTO_LOAD_PATH) -> void:
+func _init().(_SCHEMA_CLASS) -> void:
     pass
 
 

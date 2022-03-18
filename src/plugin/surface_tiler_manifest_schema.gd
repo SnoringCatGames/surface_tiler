@@ -3,9 +3,12 @@ class_name SurfaceTilerManifestSchema
 extends FrameworkManifestSchema
 
 
-const _DISPLAY_NAME := "SurfaceTiler"
-
+const _DISPLAY_NAME := "Surface Tiler"
 const _FOLDER_NAME := "surface_tiler"
+const _AUTO_LOAD_NAME := "St"
+const _AUTO_LOAD_DEPS := ["Sc"]
+const _AUTO_LOAD_PATH := "res://addons/surface_tiler/src/config/st.gd"
+const _ICON_DIRECTORY_PATH := "res://addons/surface_tiler/assets/images/"
 
 const _PROPERTIES := {
     outer_autotile_name = [TYPE_STRING, "autotile"],
@@ -46,13 +49,12 @@ const _PROPERTIES := {
 }
 
 
-func get_framework_display_name() -> String:
-    return _DISPLAY_NAME
-
-
-func get_framework_folder_name() -> String:
-    return _FOLDER_NAME
-
-
-func get_properties() -> Dictionary:
-    return _PROPERTIES
+func _init().(
+        _DISPLAY_NAME,
+        _FOLDER_NAME,
+        _AUTO_LOAD_NAME,
+        _AUTO_LOAD_DEPS,
+        _AUTO_LOAD_PATH,
+        _ICON_DIRECTORY_PATH,
+        _PROPERTIES) -> void:
+    pass
