@@ -4,10 +4,6 @@ extends EditorPlugin
 
 # FIXME: LEFT OFF HERE: ------------------------------------------
 # - Registering:
-#   - Wait for Sc (and any other autoload deps) to exist.
-#     - Configure these as a const array for the framework.
-#   - When Sc exists, we know basic logging and utils are available.
-#   - Register self framework with Sc.
 #   - Debounce framework-registrations with 0.05.
 #     - After that, trigger complete re-initialization of all frameworks.
 #       - Except for logging instance within Sc.

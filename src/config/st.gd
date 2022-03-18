@@ -137,6 +137,24 @@ func _init().(
     pass
 
 
+func _destroy() -> void:
+    ._destroy()
+    manifest = {}
+    are_models_initialized = false
+    tileset_configs = []
+
+
+func _get_members_to_destroy() -> Array:
+    return [
+        annotations_parser,
+        annotations_recorder,
+        corner_calculator,
+        quadrant_calculator,
+        shape_calculator,
+        initializer,
+    ]
+
+
 func _amend_manifest(manifest: Dictionary) -> void:
     pass
 
