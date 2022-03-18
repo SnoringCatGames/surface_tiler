@@ -8,7 +8,13 @@
 
 _(FIXME: description) a library for [Godot](https://godotengine.org/)._
 
-_FIXME: Add a hook._
+_Next-level autotiling._
+
+Some features include:
+-   90° and 45° surfaces.
+-   Exterior-to-interior art transitions spanning two subtiles.
+-   Dynamically constructed subtiles from individual constituent quadrants according to the local topography of the corresponding cell in the TileMap.
+-   A corner-type annotation system for defining the shapes of each quadrant in the tileset.
 
 --------
 
