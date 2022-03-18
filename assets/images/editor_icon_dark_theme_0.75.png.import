@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/surface_tiler_light_theme_1.png-04b85b94759bd44f3959d8ccdcfe9f43.stex"
+path="res://.import/editor_icon_dark_theme_0.75.png-ca7bcbd9b7b26ec02455ea53a87b21e6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/surface_tiler/assets/images/surface_tiler_light_theme_1.png"
-dest_files=[ "res://.import/surface_tiler_light_theme_1.png-04b85b94759bd44f3959d8ccdcfe9f43.stex" ]
+source_file="res://addons/surface_tiler/assets/images/editor_icon_dark_theme_0.75.png"
+dest_files=[ "res://.import/editor_icon_dark_theme_0.75.png-ca7bcbd9b7b26ec02455ea53a87b21e6.stex" ]
 
 [params]
 
