@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/surface_tiler/src/plugin/surface_tiler_main_panel.gd" type="Script" id=1]
-[ext_resource path="res://addons/surface_tiler/src/plugin/framework_manifest_panel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/scaffolder/src/plugin/framework_manifest_panel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/scaffolder/assets/fonts/nunito_font_l.tres" type="DynamicFont" id=3]
 
 [node name="SurfaceTilerMainPanel" type="CenterContainer"]
