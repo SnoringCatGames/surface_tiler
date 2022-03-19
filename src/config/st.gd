@@ -150,7 +150,7 @@ func _amend_manifest() -> void:
     pass
 
 
-func _register_manifest() -> void:
+func _parse_manifest() -> void:
     self.outer_autotile_name = manifest.outer_autotile_name
     if manifest.has("inner_autotile_name"):
         self.inner_autotile_name = manifest.inner_autotile_name
