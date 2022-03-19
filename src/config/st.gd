@@ -69,8 +69,6 @@ var SUBTILE_DEPTH_TO_UNMATCHED_CORNER_WEIGHT_MULTIPLIER := {
 
 # --- SurfaceTiler global state ---
 
-var manifest: Dictionary
-
 var are_models_initialized := false
 
 # Dictionary<int, String>
@@ -148,20 +146,11 @@ func _get_members_to_destroy() -> Array:
     ]
 
 
-func _amend_manifest(manifest: Dictionary) -> void:
+func _amend_manifest() -> void:
     pass
 
 
-func _register_manifest(manifest: Dictionary) -> void:
-    pass
-
-
-func _register_manifest_TMP(manifest: Dictionary) -> void:
-    # FIXME: LEFT OFF HERE: -------------------------
-    # - Consolidate this _TMP function version with the other.
-
-    self.manifest = manifest
-    
+func _register_manifest() -> void:
     self.outer_autotile_name = manifest.outer_autotile_name
     if manifest.has("inner_autotile_name"):
         self.inner_autotile_name = manifest.inner_autotile_name
@@ -189,18 +178,9 @@ func _register_manifest_TMP(manifest: Dictionary) -> void:
         tileset_config.tile_set._config = tileset_config
     
     _parse_subtile_corner_key_values()
-    
-    _instantiate_sub_modules_TMP()
 
 
 func _instantiate_sub_modules() -> void:
-    pass
-
-
-func _instantiate_sub_modules_TMP() -> void:
-    # FIXME: LEFT OFF HERE: -------------------------
-    # - Consolidate this _TMP function version with the other.
-    
     if !supports_runtime_autotiling and \
             Engine.editor_hint:
         return
