@@ -146,10 +146,6 @@ func _get_members_to_destroy() -> Array:
     ]
 
 
-func _amend_manifest() -> void:
-    pass
-
-
 func _parse_manifest() -> void:
     self.outer_autotile_name = manifest.outer_autotile_name
     if manifest.has("inner_autotile_name"):

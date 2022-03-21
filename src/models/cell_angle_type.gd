@@ -4,9 +4,9 @@ class_name CellAngleType
 enum {
     UNKNOWN,
     EMPTY,
-    A90,
-    A45,
-    A27,
+    A90 = 90,
+    A45 = 45,
+    A27 = 27,
 }
 
 
