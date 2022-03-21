@@ -20,7 +20,7 @@ extends FrameworkGlobal
 
 # --- Constants ---
 
-const _SCHEMA_CLASS := SurfaceTilerSchema
+const _SCHEMA_PATH := "res://addons/surface_tiler/src/plugin/surface_tiler_schema.gd"
 
 # FIXME: LEFT OFF HERE: --------------------------------
 var ACCEPTABLE_MATCH_WEIGHT_THRESHOLD := 1.0
@@ -124,7 +124,7 @@ var tileset_configs: Array
 # ---
 
 
-func _init().(_SCHEMA_CLASS) -> void:
+func _init().(_SCHEMA_PATH) -> void:
     pass
 
 
