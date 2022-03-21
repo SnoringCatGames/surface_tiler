@@ -8,7 +8,9 @@ const _FOLDER_NAME := "surface_tiler"
 const _AUTO_LOAD_NAME := "St"
 const _AUTO_LOAD_DEPS := ["Sc"]
 const _AUTO_LOAD_PATH := "res://addons/surface_tiler/src/config/st.gd"
-const _PLUGIN_ICON_DIRECTORY_PATH := "res://addons/surface_tiler/assets/images/editor_icons/"
+const _MANIFEST_PATH := "res://addons/surafce_tiler/src/config/manifest.json"
+const _PLUGIN_ICON_DIRECTORY_PATH := \
+        "res://addons/surface_tiler/assets/images/editor_icons/"
 
 const _PROPERTIES := {
     outer_autotile_name = "autotile",
@@ -55,6 +57,7 @@ func _init().(
         _AUTO_LOAD_NAME,
         _AUTO_LOAD_DEPS,
         _AUTO_LOAD_PATH,
+        _MANIFEST_PATH,
         _PLUGIN_ICON_DIRECTORY_PATH,
         _PROPERTIES) -> void:
     pass
