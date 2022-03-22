@@ -180,9 +180,10 @@ func set_cellv(
         tile_id: int,
         flip_x := false,
         flip_y := false,
-        transpose := false) -> void:
+        transpose := false,
+        autotile_coord := Vector2.ZERO) -> void:
     var previous_tile_id := get_cellv(position)
-    .set_cellv(position, tile_id, flip_x, flip_y, transpose)
+    .set_cellv(position, tile_id, flip_x, flip_y, transpose, autotile_coord)
     if previous_tile_id != tile_id:
         _on_cell_tile_changed(
                 position,
