@@ -41,7 +41,9 @@ const _PROPERTIES := {
                 "res://addons/surface_tiler/assets/images/tileset_quadrants.png",
             tileset_corner_type_annotations_path = \
                 "res://addons/surface_tiler/assets/images/tileset_corner_type_annotations.png",
-            tile_set = [TYPE_TILESET, null],
+            # FIXME: LEFT OFF HERE: ------------------- Make a default in the SurfaceTiler directory.
+            tile_set = preload(
+                "res://addons/squirrel_away/src/tiles/squirrel_away_tileset_with_many_angles.tres"),
             quadrant_size = 16,
             subtile_collision_margin = 3.0,
             are_45_degree_subtiles_used = true,
