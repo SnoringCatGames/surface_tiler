@@ -16,6 +16,7 @@ func set_up(
     
     var container := HBoxContainer.new()
     container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    container.mouse_filter = Control.MOUSE_FILTER_PASS
     parent_control.add_child(container)
     
     var button := Button.new()
@@ -31,6 +32,7 @@ func set_up(
     
     var spacer := Control.new()
     spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    spacer.mouse_filter = Control.MOUSE_FILTER_PASS
     container.add_child(spacer)
     
     # Move this button's row to the top.
