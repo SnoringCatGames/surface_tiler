@@ -1,4 +1,5 @@
 tool
+class_name StInterface
 extends FrameworkGlobal
 ## FIXME: LEFT OFF HERE: ------------- Update docs.
 ## -   This is a global singleton that defines a bunch of Surfacer

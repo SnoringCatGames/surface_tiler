@@ -3,16 +3,9 @@ class_name SurfaceTilerSchema
 extends FrameworkSchema
 
 
-const _DISPLAY_NAME := "Surface Tiler"
-const _FOLDER_NAME := "surface_tiler"
-const _AUTO_LOAD_NAME := "St"
-const _AUTO_LOAD_DEPS := ["Sc"]
-const _AUTO_LOAD_PATH := "res://addons/surface_tiler/src/config/st.gd"
-const _MANIFEST_PATH := "res://addons/surface_tiler/src/config/manifest.json"
-const _PLUGIN_ICON_DIRECTORY_PATH := \
-        "res://addons/surface_tiler/assets/images/editor_icons/"
+const _METADATA_SCRIPT := SurfaceTilerMetadata
 
-const _PROPERTIES := {
+var _properties := {
     outer_autotile_name = "autotile",
     inner_autotile_name = "__inner_autotile__",
     forces_convex_collision_shapes = true,
@@ -53,13 +46,5 @@ const _PROPERTIES := {
 }
 
 
-func _init().(
-        _DISPLAY_NAME,
-        _FOLDER_NAME,
-        _AUTO_LOAD_NAME,
-        _AUTO_LOAD_DEPS,
-        _AUTO_LOAD_PATH,
-        _MANIFEST_PATH,
-        _PLUGIN_ICON_DIRECTORY_PATH,
-        _PROPERTIES) -> void:
+func _init().(_METADATA_SCRIPT, _properties) -> void:
     pass

@@ -3,10 +3,7 @@ class_name SurfaceTilerPlugin
 extends FrameworkPlugin
 
 
-const _AUTO_LOAD_NAME := "St"
-const _AUTO_LOAD_PATH := "res://addons/surface_tiler/src/config/st.gd"
-const _SCHEMA_PATH := \
-        "res://addons/surface_tiler/src/plugin/surface_tiler_schema.gd"
+const _METADATA_SCRIPT := SurfaceTilerMetadata
 
 const _CORNER_MATCH_TILEMAP_INSPECTOR_PLUGIN := \
         "res://addons/surface_tiler/src/plugin/corner_match_tilemap_inspector_plugin.gd"
@@ -14,10 +11,7 @@ const _CORNER_MATCH_TILEMAP_INSPECTOR_PLUGIN := \
 var _corner_match_tilemap_inspector_plugin
 
 
-func _init().(
-        _AUTO_LOAD_NAME,
-        _AUTO_LOAD_PATH,
-        _SCHEMA_PATH) -> void:
+func _init().(_METADATA_SCRIPT) -> void:
     pass
 
 
