@@ -7,6 +7,7 @@ func set_up(
         node: FrameworkManifestEditorNode,
         row,
         parent_control: Control,
+        row_height: float,
         label_width: float,
         control_width: float,
         padding: float) -> void:
@@ -19,21 +20,22 @@ func set_up(
     container.mouse_filter = Control.MOUSE_FILTER_PASS
     parent_control.add_child(container)
     
+    var spacer := Control.new()
+    spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    spacer.mouse_filter = Control.MOUSE_FILTER_PASS
+    container.add_child(spacer)
+    
     var button := Button.new()
     button.text = "Recalculate"
     button.rect_min_size.x = control_width
-    button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+    button.rect_min_size.y = row_height
+    button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     button.connect(
             "pressed",
             self,
             "_on_button_pressed",
             [node.parent.children.tile_set.value])
     container.add_child(button)
-    
-    var spacer := Control.new()
-    spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    spacer.mouse_filter = Control.MOUSE_FILTER_PASS
-    container.add_child(spacer)
     
     # Move this button's row to the top.
     var row_parent: Control = row.get_parent()
