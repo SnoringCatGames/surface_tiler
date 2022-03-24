@@ -26,7 +26,7 @@ func save_corner_type_annotation_key(
 func load_tileset_corner_type_annotations(
         tileset_corner_type_annotations_path: String) -> Dictionary:
     var encoding_path := _get_json_path(tileset_corner_type_annotations_path)
-    var encoding := Sc.json.load_file(
+    var encoding: Dictionary = Sc.json.load_file(
             encoding_path,
             false,
             true)
