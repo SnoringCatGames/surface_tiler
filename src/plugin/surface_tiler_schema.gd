@@ -45,6 +45,9 @@ var _properties := {
     ],
 }
 
+var _overrides := {
+}
 
-func _init().(_METADATA_SCRIPT, _properties) -> void:
+
+func _init().(_METADATA_SCRIPT, _properties, _overrides) -> void:
     pass
