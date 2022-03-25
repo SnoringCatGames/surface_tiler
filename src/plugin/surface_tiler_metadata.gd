@@ -13,6 +13,7 @@ const PLUGIN_ICON_PATH_PREFIX := \
 const SCHEMA_PATH := \
         "res://addons/surface_tiler/src/plugin/surface_tiler_schema.gd"
 const MANIFEST_PATH := "res://addons/surface_tiler/src/config/manifest.json"
+const MODES := {}
 
 
 func _init().(
@@ -23,5 +24,6 @@ func _init().(
         AUTO_LOAD_PATH,
         PLUGIN_ICON_PATH_PREFIX,
         SCHEMA_PATH,
-        MANIFEST_PATH) -> void:
+        MANIFEST_PATH,
+        MODES) -> void:
     pass
