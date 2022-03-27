@@ -18,6 +18,7 @@ func _init().(_METADATA_SCRIPT) -> void:
 func _set_up() -> void:
     ._set_up()
     
+    assert(!is_instance_valid(_corner_match_tilemap_inspector_plugin))
     # FIXME: LEFT OFF HERE: ------------
     # - Can I preload this without circular deps?
     _corner_match_tilemap_inspector_plugin = \
