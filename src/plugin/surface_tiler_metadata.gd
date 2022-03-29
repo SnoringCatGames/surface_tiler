@@ -12,7 +12,7 @@ const PLUGIN_ICON_PATH_PREFIX := \
         "res://addons/surface_tiler/assets/images/editor_icons/surface_tiler"
 const SCHEMA_PATH := \
         "res://addons/surface_tiler/src/plugin/surface_tiler_schema.gd"
-const MANIFEST_PATH := "res://addons/surface_tiler/src/config/manifest.json"
+const MANIFEST_PATH_OVERRIDE := ""
 const MODES := {}
 
 
@@ -24,6 +24,6 @@ func _init().(
         AUTO_LOAD_PATH,
         PLUGIN_ICON_PATH_PREFIX,
         SCHEMA_PATH,
-        MANIFEST_PATH,
+        MANIFEST_PATH_OVERRIDE,
         MODES) -> void:
     pass
