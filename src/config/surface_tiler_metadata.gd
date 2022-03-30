@@ -13,6 +13,7 @@ const PLUGIN_ICON_PATH_PREFIX := \
 const SCHEMA_PATH := \
         "res://addons/surface_tiler/src/config/surface_tiler_schema.gd"
 const MANIFEST_PATH_OVERRIDE := ""
+const METRIC_KEYS := []
 const MODES := {}
 
 
@@ -25,5 +26,6 @@ func _init().(
         PLUGIN_ICON_PATH_PREFIX,
         SCHEMA_PATH,
         MANIFEST_PATH_OVERRIDE,
+        METRIC_KEYS,
         MODES) -> void:
     pass
