@@ -21,7 +21,8 @@ extends FrameworkGlobal
 
 # --- Constants ---
 
-const _SCHEMA_PATH := "res://addons/surface_tiler/src/config/surface_tiler_schema.gd"
+const _SCHEMA_PATH := \
+        "res://addons/surface_tiler/src/config/surface_tiler_schema.gd"
 
 # FIXME: LEFT OFF HERE: --------------------------------
 var ACCEPTABLE_MATCH_WEIGHT_THRESHOLD := 1.0
