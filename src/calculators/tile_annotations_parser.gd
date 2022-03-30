@@ -1,5 +1,5 @@
 tool
-class_name TilesetAnnotationsParser
+class_name TileAnnotationsParser
 extends Node
 
 
@@ -117,14 +117,14 @@ func parse_corner_type_annotation_key(
 #                           SubtileCorner, # VD2-external-corner
 #                           Vector2        # Quadrant coordinates
 #                         >)>)>)>)>)>)>)>)>)>>
-func parse_tileset_corner_type_annotations(
-        tileset_corner_type_annotations_path: String,
+func parse_tile_corner_type_annotations(
+        tile_corner_type_annotations_path: String,
         quadrant_size: int,
-        outer_tileset: CornerMatchTileset) -> Dictionary:
-    var corner_type_annotation_key := outer_tileset.corner_type_annotation_key
+        tile: CornerMatchTile) -> Dictionary:
+    var corner_type_annotation_key := tile.corner_type_annotation_key
     var subtile_size := quadrant_size * 2
     
-    var texture: Texture = load(tileset_corner_type_annotations_path)
+    var texture: Texture = load(tile_corner_type_annotations_path)
     var image: Image = texture.get_data()
     
     var size := image.get_size()
@@ -154,9 +154,9 @@ func parse_tileset_corner_type_annotations(
                     subtile_position,
                     quadrant_size,
                     image,
-                    tileset_corner_type_annotations_path)
+                    tile_corner_type_annotations_path)
     
-    _validate_quadrants(subtile_corner_types, outer_tileset)
+    _validate_quadrants(subtile_corner_types, tile)
     
     image.unlock()
     
@@ -392,7 +392,7 @@ static func _get_implicit_connection_indicator(
         
         _:
             Sc.logger.error(
-                    "TilesetAnnotationsParser._get_implicit_connection_indicator")
+                    "TileAnnotationsParser._get_implicit_connection_indicator")
     
     if !CornerDirection.get_is_top(corner_direction):
         y_offset = quadrant_size - 1 - y_offset
@@ -463,7 +463,7 @@ static func _get_annotation(
                     quadrant_size - ANNOTATION_SIZE,
                     ANNOTATION_SIZE)
         _:
-            Sc.logger.error("TilesetAnnotationsParser._get_quadrant_annotation")
+            Sc.logger.error("TileAnnotationsParser._get_quadrant_annotation")
     
     if !CornerDirection.get_is_left(corner_direction):
         region_start.x = quadrant_size - ANNOTATION_SIZE - region_start.x
@@ -615,7 +615,7 @@ static func _get_implicit_connection_type(
             neighbor_quadrant_offset = Vector2(0, -quadrant_size * 2)
         
         _:
-            Sc.logger.error("TilesetAnnotationsParser._get_implicit_connection_type")
+            Sc.logger.error("TileAnnotationsParser._get_implicit_connection_type")
     
     if !CornerDirection.get_is_top(corner_direction):
         neighbor_quadrant_offset.y *= -1
@@ -756,7 +756,7 @@ static func _get_quadrant_position(
         CornerDirection.BOTTOM_RIGHT:
             return subtile_position + Vector2(1,1) * quadrant_size
         _:
-            Sc.logger.error("TilesetAnnotationsParser._get_quadrant_position")
+            Sc.logger.error("TileAnnotationsParser._get_quadrant_position")
             return Vector2.INF
 
 
@@ -917,7 +917,7 @@ static func _validate_tileset_annotation(
 
 static func _validate_quadrants(
         subtile_corner_types: Dictionary,
-        outer_tileset: CornerMatchTileset) -> void:
+        tile: CornerMatchTile) -> void:
     # FIXME: LEFT OFF HERE: ----------------------
     # - Check that many corner-types are defined at least once for all four
     #   corner-directions.
@@ -992,10 +992,10 @@ static func _validate_quadrants(
     
     var required_corner_types_collection := \
             [REQUIRED_90_QUADRANT_CORNER_TYPES]
-    if outer_tileset.are_45_degree_subtiles_used:
+    if tile.are_45_degree_subtiles_used:
         required_corner_types_collection.push_back(
                 REQUIRED_45_QUADRANT_CORNER_TYPES)
-    if outer_tileset.are_27_degree_subtiles_used:
+    if tile.are_27_degree_subtiles_used:
         required_corner_types_collection.push_back(
                 REQUIRED_27_QUADRANT_CORNER_TYPES)
     

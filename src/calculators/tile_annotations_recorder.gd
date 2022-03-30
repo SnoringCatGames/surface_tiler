@@ -1,5 +1,5 @@
 tool
-class_name TilesetAnnotationsRecorder
+class_name TileAnnotationsRecorder
 extends Node
 
 
@@ -23,22 +23,22 @@ func save_corner_type_annotation_key(
             false)
 
 
-func load_tileset_corner_type_annotations(
-        tileset_corner_type_annotations_path: String) -> Dictionary:
-    var encoding_path := _get_json_path(tileset_corner_type_annotations_path)
+func load_tile_corner_type_annotations(
+        tile_corner_type_annotations_path: String) -> Dictionary:
+    var encoding_path := _get_json_path(tile_corner_type_annotations_path)
     var encoding: Dictionary = Sc.json.load_file(
             encoding_path,
             false,
             true)
-    return decode_tileset_corner_type_annotations(encoding)
+    return decode_tile_corner_type_annotations(encoding)
 
 
-func save_tileset_corner_type_annotations(
-        tileset_corner_type_annotations_path: String,
+func save_tile_corner_type_annotations(
+        tile_corner_type_annotations_path: String,
         annotations: Dictionary) -> void:
-    var encoding_path := _get_json_path(tileset_corner_type_annotations_path)
+    var encoding_path := _get_json_path(tile_corner_type_annotations_path)
     var encoding: Dictionary = \
-            encode_tileset_corner_type_annotations(annotations)
+            encode_tile_corner_type_annotations(annotations)
     Sc.json.save_file(
             encoding,
             encoding_path,
@@ -46,22 +46,22 @@ func save_tileset_corner_type_annotations(
             false)
 
 
-func decode_tileset_corner_type_annotations(encoding):
+func decode_tile_corner_type_annotations(encoding):
     if encoding is Dictionary:
         var value := {}
         for key in encoding:
             value[int(key)] = \
-                    decode_tileset_corner_type_annotations(encoding[key])
+                    decode_tile_corner_type_annotations(encoding[key])
         return value
     else:
         return Sc.json.decode_vector2(encoding)
 
 
-func encode_tileset_corner_type_annotations(value):
+func encode_tile_corner_type_annotations(value):
     if value is Dictionary:
         var encoding := {}
         for key in value:
-            encoding[key] = encode_tileset_corner_type_annotations(value[key])
+            encoding[key] = encode_tile_corner_type_annotations(value[key])
         return encoding
     else:
         return Sc.json.encode_vector2(value)

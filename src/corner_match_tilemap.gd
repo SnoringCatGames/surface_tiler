@@ -47,7 +47,7 @@ func _ready() -> void:
     if !St.are_models_initialized:
         St.initialize_models()
     if !tile_set.is_initialized:
-        St.initializer.initialize_tileset(tile_set._config)
+        St.initializer.initialize_tileset(tile_set)
     
     var children := Sc.utils.get_children_by_type(self, CornerMatchInnerTilemap)
     if children.empty():
@@ -60,8 +60,8 @@ func _ready() -> void:
         inner_tilemap = children[0]
     inner_tilemap.tile_set = tile_set
     
-    self.cell_size = tile_set.get_outer_cell_size()
-    inner_tilemap.cell_size = tile_set.get_inner_cell_size()
+    self.cell_size = tile_set.subtile_size
+    inner_tilemap.cell_size = tile_set.subtile_size / 2.0
     
     assert(cell_size == Sc.level_session.config.cell_size)
 
@@ -214,12 +214,13 @@ func _on_cell_tile_changed(
     # FIXME: --------------
     # - Trigger debug printing somewhere else (probably through a
     #   click-to-inspect mode that's toggled through the plugin UI).
-    St.quadrant_calculator.get_quadrants(
-            cell_position,
-            tile_id,
-            self,
-            logs_autotiling_state_for_selected_tile,
-            logs_autotiling_errors)
+    if tile_set.corner_match_tiles.has(tile_id):
+        St.quadrant_calculator.get_quadrants(
+                cell_position,
+                tile_set.corner_match_tiles[tile_id],
+                self,
+                logs_autotiling_state_for_selected_tile,
+                logs_autotiling_errors)
     
     emit_signal(
             "cell_tile_changed",
@@ -231,13 +232,16 @@ func _on_cell_tile_changed(
 func _delegate_quadrant_updates(
         cell_position: Vector2,
         tile_id: int) -> void:
-    var quadrants: Array = \
-            St.quadrant_calculator.get_quadrants(
-                cell_position,
-                tile_id,
-                self,
-                false,
-                logs_autotiling_errors)
+    if !tile_set.corner_match_tiles.has(tile_id):
+        return
+    
+    var tile: CornerMatchTile = tile_set.corner_match_tiles[tile_id]
+    var quadrants: Array = St.quadrant_calculator.get_quadrants(
+            cell_position,
+            tile,
+            self,
+            false,
+            logs_autotiling_errors)
     var cell_offsets := [
         Vector2(0,0),
         Vector2(1,0),
@@ -258,7 +262,7 @@ func _delegate_quadrant_updates(
             inner_tilemap.set_cell(
                     inner_cell_position.x,
                     inner_cell_position.y,
-                    tile_set.inner_tile_id,
+                    tile.inner_tile_id,
                     false,
                     false,
                     false,

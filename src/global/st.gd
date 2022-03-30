@@ -1,7 +1,7 @@
 tool
 class_name StInterface
 extends FrameworkGlobal
-## FIXME: LEFT OFF HERE: ------------- Update docs.
+## FIXME: LEFT OFF HERE: -------------- Update docs.
 ## -   This is a global singleton that defines a bunch of Surfacer
 ##     parameters.[br]
 ## -   All of these parameters can be configured when bootstrapping the
@@ -24,9 +24,10 @@ extends FrameworkGlobal
 const _SCHEMA_PATH := \
         "res://addons/surface_tiler/src/config/surface_tiler_schema.gd"
 
-# FIXME: LEFT OFF HERE: --------------------------------
+# FIXME: LEFT OFF HERE: ---------------------------------
 var ACCEPTABLE_MATCH_WEIGHT_THRESHOLD := 1.0
 
+# FIXME: LEFT OFF HERE: --------------------------------- Remove these?
 # NOTE: These values should be between 0 and 1, exclusive.
 var SUBTILE_DEPTH_TO_UNMATCHED_CORNER_WEIGHT_MULTIPLIER := {
     # NOTE: We need UNKNOWNs to match with high weight, so that a mapping
@@ -76,8 +77,6 @@ var are_models_initialized := false
 # Dictionary<int, String>
 var SUBTILE_CORNER_TYPE_VALUE_TO_KEY: Dictionary
 
-var outer_autotile_name: String
-var inner_autotile_name := "__INNER_TILE__"
 var forces_convex_collision_shapes: bool
 
 # -   If true, the autotiling logic will try to find the best match given which
@@ -105,8 +104,8 @@ var corner_type_annotation_key_path: String
 
 var implicit_quadrant_connection_color: Color
 
-var annotations_parser: TilesetAnnotationsParser
-var annotations_recorder: TilesetAnnotationsRecorder
+var annotations_parser: TileAnnotationsParser
+var annotations_recorder: TileAnnotationsRecorder
 var corner_calculator: SubtileTargetCornerCalculator
 var quadrant_calculator: SubtileTargetQuadrantCalculator
 var shape_calculator: CornerMatchTilesetShapeCalculator
@@ -114,13 +113,16 @@ var initializer: CornerMatchTilesetInitializer
 
 # Array<{
 #   tile_set: CornerMatchTileset,
-#   tileset_quadrants_path: String,
-#   tileset_corner_type_annotations_path: String,
 #   quadrant_size: int,
-#   subtile_collision_margin: float,
-#   are_45_degree_subtiles_used: bool,
-#   are_27_degree_subtiles_used: bool,
-# }>
+#   corner_match_tiles: [{
+#     outer_autotile_name: String,
+#     inner_autotile_name: String,
+#     tileset_quadrants_path: String,
+#     tile_corner_type_annotations_path: String,
+#     subtile_collision_margin: float,
+#     are_45_degree_subtiles_used: bool,
+#     are_27_degree_subtiles_used: bool,
+# }]>
 var tileset_configs: Array
 
 # ---
@@ -149,9 +151,6 @@ func _get_members_to_destroy() -> Array:
 
 
 func _parse_manifest() -> void:
-    self.outer_autotile_name = manifest.outer_autotile_name
-    if manifest.has("inner_autotile_name"):
-        self.inner_autotile_name = manifest.inner_autotile_name
     self.forces_convex_collision_shapes = \
             manifest.forces_convex_collision_shapes
     self.allows_fallback_corner_matches = \
@@ -167,13 +166,25 @@ func _parse_manifest() -> void:
     self.tileset_configs = manifest.tilesets
     for tileset_config in manifest.tilesets:
         assert(tileset_config.tile_set is CornerMatchTileset)
-        assert(tileset_config.tileset_quadrants_path is String)
-        assert(tileset_config.tileset_corner_type_annotations_path is String)
         assert(Sc.utils.is_num(tileset_config.quadrant_size))
-        assert(Sc.utils.is_num(tileset_config.subtile_collision_margin))
-        assert(tileset_config.are_45_degree_subtiles_used is bool)
-        assert(tileset_config.are_27_degree_subtiles_used is bool)
         tileset_config.tile_set._config = tileset_config
+        tileset_config.tile_set.subtile_size = tileset_config.quadrant_size
+
+        for tile_config in tileset_config.corner_match_tiles:
+            assert(tile_config.outer_autotile_name is String)
+            assert(tile_config.inner_autotile_name is String)
+            assert(tile_config.tileset_quadrants_path is String)
+            assert(tile_config.tile_corner_type_annotations_path is String)
+            assert(Sc.utils.is_num(tile_config.subtile_collision_margin))
+            assert(tile_config.are_45_degree_subtiles_used is bool)
+            assert(tile_config.are_27_degree_subtiles_used is bool)
+            var tile := CornerMatchTile.new()
+            tile._config = tile_config
+            tile_config.tile = tile
+            tile.tile_set = tileset_config.tile_set
+            tile.tile_id = tile.tile_set.find_tile_by_name(
+                    tile_config.outer_autotile_name)
+            tileset_config.tile_set.corner_match_tiles[tile.tile_id] = tile
     
     _parse_subtile_corner_key_values()
 
@@ -185,12 +196,12 @@ func _instantiate_sub_modules() -> void:
     
     if manifest.has("annotations_parser_class"):
         self.annotations_parser = manifest.annotations_parser_class.new()
-        assert(self.annotations_parser is TilesetAnnotationsParser)
+        assert(self.annotations_parser is TileAnnotationsParser)
     else:
-        self.annotations_parser = TilesetAnnotationsParser.new()
+        self.annotations_parser = TileAnnotationsParser.new()
     self.add_child(annotations_parser)
     
-    self.annotations_recorder = TilesetAnnotationsRecorder.new()
+    self.annotations_recorder = TileAnnotationsRecorder.new()
     self.add_child(annotations_recorder)
     
     if manifest.has("corner_calculator_class"):
@@ -237,7 +248,7 @@ func initialize_models(includes_tilesets := false) -> void:
     
     if includes_tilesets:
         for tileset_config in tileset_configs:
-            initializer.initialize_tileset(tileset_config)
+            initializer.initialize_tileset(tileset_config.tile_set)
     
     are_models_initialized = true
 

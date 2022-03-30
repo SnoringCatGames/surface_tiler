@@ -43,4 +43,4 @@ func set_up(
 
 
 func _on_button_pressed(tile_set: CornerMatchTileset) -> void:
-    St.initializer.initialize_tileset(tile_set._config, true)
+    St.initializer.initialize_tileset(tile_set, true)

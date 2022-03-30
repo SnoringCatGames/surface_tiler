@@ -8,21 +8,18 @@ const _QUADRANT_DEBUG_RESULTS_COUNT := 14
 
 func get_quadrants(
         cell_position: Vector2,
-        tile_id: int,
+        tile: CornerMatchTile,
         tilemap: CornerMatchTilemap,
         logs_debug_info := false,
         logs_error_info := false) -> Array:
-    var tileset: CornerMatchTileset = tilemap.tile_set
-    
     if !Engine.editor_hint and \
             !St.supports_runtime_autotiling:
-        return tileset.error_quadrants
+        return tile.error_quadrants
     
     var proximity := CellProximity.new(
             tilemap,
-            tileset,
-            cell_position,
-            tile_id)
+            tile,
+            cell_position)
     var target_corners := CellCorners.new(proximity)
     
     if !target_corners.get_are_corners_valid() and \
@@ -32,7 +29,7 @@ func get_quadrants(
             proximity.to_string(),
             target_corners.to_string(true),
         ])
-        return tileset.error_quadrants
+        return tile.error_quadrants
     
     var quadrant_positions := []
     quadrant_positions.resize(4)
@@ -52,10 +49,10 @@ func get_quadrants(
 #                Vector2(8,45),
 #                CornerDirection.BOTTOM_RIGHT,
 #                corner_direction,
-#                tileset)
+#                tile)
         
         var best_position_and_weight := _get_best_quadrant_match(
-                tileset.subtile_corner_types[corner_direction],
+                tile.subtile_corner_types[corner_direction],
                 corner_types,
                 0,
                 0,
@@ -77,7 +74,7 @@ func get_quadrants(
                     corner_direction,
                     corner_types,
                     [target_corners.get_corner_type(corner_direction)],
-                    tileset.subtile_corner_types)
+                    tile.subtile_corner_types)
             Sc.logger.print(">>>")
             Sc.logger.print("")
         
@@ -98,8 +95,8 @@ func get_quadrants(
                         corner_direction,
                         corner_types,
                         [target_corners.get_corner_type(corner_direction)],
-                        tileset.subtile_corner_types)
-            quadrant_position = tileset.error_quadrants[i]
+                        tile.subtile_corner_types)
+            quadrant_position = tile.error_quadrants[i]
         
         quadrant_positions[i] = quadrant_position
     
@@ -108,9 +105,9 @@ func get_quadrants(
     # so that the tilemap can clear the cell instead of assigning the empty
     # subtile.
     for i in quadrant_positions.size():
-        if quadrant_positions[i] != tileset.empty_quadrants[i]:
+        if quadrant_positions[i] != tile.empty_quadrants[i]:
             return quadrant_positions
-    return tileset.clear_quadrants
+    return tile.clear_quadrants
 
 
 # Array<Vector2, float, Dictionary, Dictionary, ...>
@@ -349,13 +346,13 @@ func _get_debug_types(
         debug_subtile_position: Vector2,
         debug_corner_direction: int,
         current_corner_direction: int,
-        tileset: CornerMatchTileset) -> Array:
+        tile: CornerMatchTile) -> Array:
     return St.annotations_parser.parse_quadrant(
-                debug_subtile_position * tileset.get_inner_cell_size().x * 2,
+                debug_subtile_position * tile.get_inner_cell_size().x * 2,
                 debug_corner_direction,
-                tileset.get_inner_cell_size().x,
-                tileset._config.tileset_corner_type_annotations_path,
-                tileset.corner_type_annotation_key) if \
+                tile.get_inner_cell_size().x,
+                tile._config.tile_corner_type_annotations_path,
+                tile.corner_type_annotation_key) if \
             debug_subtile_position != Vector2.INF and \
                 current_corner_direction == debug_corner_direction else \
             []
