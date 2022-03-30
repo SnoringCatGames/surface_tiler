@@ -7,7 +7,7 @@ const DISPLAY_NAME := "Surface Tiler"
 const FOLDER_NAME := "surface_tiler"
 const AUTO_LOAD_NAME := "St"
 const AUTO_LOAD_DEPS := ["Sc"]
-const AUTO_LOAD_PATH := "res://addons/surface_tiler/src/config/st.gd"
+const AUTO_LOAD_PATH := "res://addons/surface_tiler/src/global/st.gd"
 const PLUGIN_ICON_PATH_PREFIX := \
         "res://addons/surface_tiler/assets/images/editor_icons/surface_tiler"
 const SCHEMA_PATH := \
