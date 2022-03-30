@@ -11,7 +11,7 @@ const AUTO_LOAD_PATH := "res://addons/surface_tiler/src/config/st.gd"
 const PLUGIN_ICON_PATH_PREFIX := \
         "res://addons/surface_tiler/assets/images/editor_icons/surface_tiler"
 const SCHEMA_PATH := \
-        "res://addons/surface_tiler/src/plugin/surface_tiler_schema.gd"
+        "res://addons/surface_tiler/src/config/surface_tiler_schema.gd"
 const MANIFEST_PATH_OVERRIDE := ""
 const MODES := {}
 
