@@ -40,7 +40,7 @@ var tile_set: TileSet
 
 var _config: Dictionary
 
-var tile_id: int
+var id: int
 
 var is_initialized := false
 

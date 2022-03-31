@@ -177,16 +177,17 @@ func _initialize_outer_tile(
             tile._config.outer_autotile_name + \
             tile_name_suffix
     
-    var tile_id := tile.tile_set.find_tile_by_name(tile_name)
-    if tile_id >= 0:
+    tile.id = tile.tile_set.find_tile_by_name(tile_name)
+    if tile.id >= 0:
         # Clear any pre-existing state for this tile.
-        tile.tile_set.remove_tile(tile_id)
+        tile.tile_set.remove_tile(tile.id)
     else:
-        tile_id = tile.tile_set.get_last_unused_tile_id()
-    tile.tile_set.create_tile(tile_id)
+        tile.id = tile.tile_set.get_last_unused_tile_id()
+    tile.tile_set.create_tile(tile.id)
+    tileset_config.tile_set.corner_match_tiles[tile.id] = tile
     
-    tile._tile_id_to_angle_type[tile_id] = angle_type
-    tile._angle_type_to_tile_id[angle_type] = tile_id
+    tile._tile_id_to_angle_type[tile.id] = angle_type
+    tile._angle_type_to_tile_id[angle_type] = tile.id
     
     var empty_texture: Texture = load(Sc.images.TRANSPARENT_PIXEL_PATH)
     var empty_texture_size: Vector2 = empty_texture.get_size()
@@ -200,17 +201,15 @@ func _initialize_outer_tile(
     var subtile_size: Vector2 = \
             Vector2.ONE * tile.tile_set._config.quadrant_size * 2
     
-    tile.tile_set.tile_set_name(tile_id, tile_name)
-    tile.tile_set.tile_set_texture(tile_id, empty_texture)
-    tile.tile_set.tile_set_region(tile_id, tile_region)
-    tile.tile_set.tile_set_tile_mode(tile_id, TileSet.AUTO_TILE)
-    tile.tile_set.autotile_set_size(tile_id, subtile_size)
+    tile.tile_set.tile_set_name(tile.id, tile_name)
+    tile.tile_set.tile_set_texture(tile.id, empty_texture)
+    tile.tile_set.tile_set_region(tile.id, tile_region)
+    tile.tile_set.tile_set_tile_mode(tile.id, TileSet.AUTO_TILE)
+    tile.tile_set.autotile_set_size(tile.id, subtile_size)
     tile.tile_set.autotile_set_bitmask_mode(
-            tile_id, TileSet.BITMASK_3X3_MINIMAL)
+            tile.id, TileSet.BITMASK_3X3_MINIMAL)
     
-    _set_outer_tile_icon_coordinates(
-            tile,
-            tile_id)
+    _set_outer_tile_icon_coordinates(tile, tile.id)
 
 
 func _set_outer_tile_icon_coordinates(

@@ -39,7 +39,7 @@ var _properties := {
         "res://addons/surface_tiler/src/calculators/subtile_target_corner_calculator.gd"),
     quadrant_calculator_class = preload(
         "res://addons/surface_tiler/src/calculators/subtile_target_quadrant_calculator.gd"),
-    initializer_class = preload(
+    tileset_initializer_class = preload(
         "res://addons/surface_tiler/src/calculators/corner_match_tileset_initializer.gd"),
     shape_calculator_class = preload(
         "res://addons/surface_tiler/src/calculators/corner_match_tileset_shape_calculator.gd"),

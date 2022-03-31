@@ -170,7 +170,7 @@ func _parse_manifest() -> void:
         tileset_config.tile_set._config = tileset_config
         tileset_config.tile_set.subtile_size = \
                 tileset_config.quadrant_size * Vector2.ONE * 2.0
-
+        
         for tile_config in tileset_config.corner_match_tiles:
             assert(tile_config.outer_autotile_name is String)
             assert(tile_config.inner_autotile_name is String)
@@ -183,9 +183,6 @@ func _parse_manifest() -> void:
             tile._config = tile_config
             tile_config.tile = tile
             tile.tile_set = tileset_config.tile_set
-            tile.tile_id = tile.tile_set.find_tile_by_name(
-                    tile_config.outer_autotile_name)
-            tileset_config.tile_set.corner_match_tiles[tile.tile_id] = tile
     
     _parse_subtile_corner_key_values()
 
@@ -226,8 +223,8 @@ func _instantiate_sub_modules() -> void:
         self.shape_calculator = CornerMatchTilesetShapeCalculator.new()
     self.add_child(shape_calculator)
     
-    if manifest.has("initializer_class"):
-        self.initializer = manifest.initializer_class.new()
+    if manifest.has("tileset_initializer_class"):
+        self.initializer = manifest.tileset_initializer_class.new()
         assert(self.initializer is CornerMatchTilesetInitializer)
     else:
         self.initializer = CornerMatchTilesetInitializer.new()
