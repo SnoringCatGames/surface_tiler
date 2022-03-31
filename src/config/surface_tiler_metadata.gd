@@ -1,6 +1,6 @@
 tool
 class_name SurfaceTilerMetadata
-extends PluginMetadata
+extends FrameworkMetadata
 
 
 const DISPLAY_NAME := "Surface Tiler"
