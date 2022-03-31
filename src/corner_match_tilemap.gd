@@ -193,9 +193,7 @@ func set_cellv(
         transpose := false,
         autotile_coord := Vector2.ZERO) -> void:
     var previous_tile_id := get_cellv(position)
-    # FIXME: --------- Update to v3.5.
-    .set_cellv(position, tile_id, flip_x, flip_y, transpose)
-    # .set_cellv(position, tile_id, flip_x, flip_y, transpose, autotile_coord)
+    .set_cellv(position, tile_id, flip_x, flip_y, transpose, autotile_coord)
     if previous_tile_id != tile_id:
         _on_cell_tile_changed(
                 position,
@@ -221,7 +219,8 @@ func _on_cell_tile_changed(
                 if neighbor_position == cell_position:
                     # We already updated this cell.
                     continue
-                _delegate_quadrant_updates(neighbor_position, tile_id)
+                var neighbor_tile_id := self.get_cellv(neighbor_position)
+                _delegate_quadrant_updates(neighbor_position, neighbor_tile_id)
     
     # FIXME: --------------
     # - Trigger debug printing somewhere else (probably through a
@@ -245,17 +244,24 @@ func _on_cell_tile_changed(
 func _delegate_quadrant_updates(
         cell_position: Vector2,
         tile_id: int) -> void:
-    if !tile_set.ids_to_corner_match_tiles.has(tile_id):
-        return
+    var quadrants: Array
+    var inner_tile_id: int
+    if tile_id < 0:
+        quadrants = CornerMatchTile.CLEAR_QUADRANTS
+    else:
+        if !tile_set.ids_to_corner_match_tiles.has(tile_id):
+            return
+        
+        var tile: CornerMatchTile = tile_set.ids_to_corner_match_tiles[tile_id]
+        inner_tile_id = tile.inner_tile_id
+        quadrants = St.quadrant_calculator.get_quadrants(
+                cell_position,
+                tile_id,
+                tile,
+                self,
+                false,
+                logs_autotiling_errors)
     
-    var tile: CornerMatchTile = tile_set.ids_to_corner_match_tiles[tile_id]
-    var quadrants: Array = St.quadrant_calculator.get_quadrants(
-            cell_position,
-            tile_id,
-            tile,
-            self,
-            false,
-            logs_autotiling_errors)
     var cell_offsets := [
         Vector2(0,0),
         Vector2(1,0),
@@ -276,7 +282,7 @@ func _delegate_quadrant_updates(
             inner_tilemap.set_cell(
                     inner_cell_position.x,
                     inner_cell_position.y,
-                    tile.inner_tile_id,
+                    inner_tile_id,
                     false,
                     false,
                     false,

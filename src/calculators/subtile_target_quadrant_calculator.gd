@@ -103,7 +103,7 @@ func get_quadrants(
     for i in quadrant_positions.size():
         if quadrant_positions[i] != tile.empty_quadrants[i]:
             return quadrant_positions
-    return tile.clear_quadrants
+    return tile.CLEAR_QUADRANTS
 
 
 # Array<Vector2, float, Dictionary, Dictionary, ...>

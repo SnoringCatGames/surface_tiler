@@ -219,6 +219,9 @@ func _get_shape_vertices_for_shape_type_at_top_left(
         tile: CornerMatchTile) -> Array:
     var quadrant_size: int = tile.tile_set._config.quadrant_size
     var collision_margin: float = tile._config.subtile_collision_margin
+    if collision_margin == 0.0:
+        return _get_shape_vertices_for_shape_type_at_top_left_with_no_collision_margin(
+                shape_type, tile)
     
     match shape_type:
         QuadrantShapeType.EMPTY:
@@ -336,6 +339,125 @@ func _get_shape_vertices_for_shape_type_at_top_left(
                 Vector2(quadrant_size, quadrant_size - collision_margin),
                 Vector2(quadrant_size - collision_margin, quadrant_size),
                 Vector2(collision_margin, quadrant_size),
+            ]
+        
+        _:
+            Sc.logger.error(
+                    "CornerMatchTilesetShapeCalculator" +
+                    "._get_shape_vertices_for_shape_type_at_top_left")
+            return []
+
+
+func _get_shape_vertices_for_shape_type_at_top_left_with_no_collision_margin(
+        shape_type: int,
+        tile: CornerMatchTile) -> Array:
+    var quadrant_size: int = tile.tile_set._config.quadrant_size
+    
+    match shape_type:
+        QuadrantShapeType.EMPTY:
+            return []
+        
+        QuadrantShapeType.FULL_SQUARE:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.CLIPPED_CORNER_90_90:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.CLIPPED_CORNER_45:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.MARGIN_TOP_90:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.MARGIN_SIDE_90:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.MARGIN_TOP_AND_SIDE_90:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.FLOOR_45_N:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.CEILING_45_N:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+            ]
+        QuadrantShapeType.EXT_90H_45_CONVEX_ACUTE:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+            ]
+        QuadrantShapeType.EXT_90V_45_CONVEX_ACUTE:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        
+        QuadrantShapeType.FULL_SQUARE_CLIPPED_CORNER_45_OPP:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.CLIPPED_CORNER_90_90_CLIPPED_CORNER_45_OPP:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.CLIPPED_CORNER_45_CLIPPED_CORNER_45_OPP:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.MARGIN_TOP_90_CLIPPED_CORNER_45_OPP:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
+            ]
+        QuadrantShapeType.MARGIN_SIDE_90_CLIPPED_CORNER_45_OPP:
+            return [
+                Vector2(0, 0),
+                Vector2(quadrant_size, 0),
+                Vector2(quadrant_size, quadrant_size),
+                Vector2(0, quadrant_size),
             ]
         
         _:

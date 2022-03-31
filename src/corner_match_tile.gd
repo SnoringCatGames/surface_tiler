@@ -50,7 +50,7 @@ var inner_tile_name: String
 
 var error_quadrants: Array
 var empty_quadrants: Array
-var clear_quadrants := [Vector2.INF, Vector2.INF, Vector2.INF, Vector2.INF]
+const CLEAR_QUADRANTS := [Vector2.INF, Vector2.INF, Vector2.INF, Vector2.INF]
 
 # Dictionary<int, int>
 var _tile_id_to_angle_type := {}
