@@ -92,12 +92,6 @@ func get_quadrants(
                 proximity.to_string(),
                 target_corners.to_string(true),
             ])
-            if logs_debug_info:
-                _print_subtile_corner_types(
-                        corner_direction,
-                        corner_types,
-                        [target_corners.get_corner_type(corner_direction)],
-                        tile.subtile_corner_types)
             quadrant_position = tile.error_quadrants[i]
         
         quadrant_positions[i] = quadrant_position

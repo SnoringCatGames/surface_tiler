@@ -154,14 +154,14 @@ func get_is_present(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return tile.tile_set._is_tile_bound(tile_id, neighbor_id)
+    return tile._is_tile_bound(tile_id, neighbor_id)
 
 
 func get_is_empty(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return !tile.tile_set._is_tile_bound(tile_id, neighbor_id)
+    return !tile._is_tile_bound(tile_id, neighbor_id)
 
 
 func get_is_a_corner_match_subtile(relative_x := 0, relative_y := 0) -> bool:
