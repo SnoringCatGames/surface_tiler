@@ -126,13 +126,11 @@ func _record_shapes(
         h_internal_corner_type: int,
         v_internal_corner_type: int,
         shape_type_to_shapes: Dictionary) -> void:
-    var shape_type := \
-            QuadrantShapeType.get_shape_type_for_corner_type(
-                self_corner_type,
-                h_internal_corner_type,
-                v_internal_corner_type)
-    var shapes: Array = \
-            shape_type_to_shapes[shape_type][corner_direction]
+    var shape_type := QuadrantShapeType.get_shape_type_for_corner_type(
+            self_corner_type,
+            h_internal_corner_type,
+            v_internal_corner_type)
+    var shapes: Array = shape_type_to_shapes[shape_type][corner_direction]
     collision_shapes \
             [corner_direction] \
             [self_corner_type] \

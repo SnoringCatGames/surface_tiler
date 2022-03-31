@@ -253,7 +253,7 @@ func _set_inner_tile_shapes_for_quadrants(
             for h_internal_corner_type in \
                     h_internal_corner_type_map_or_position:
                 var v_internal_corner_type_map_or_position = \
-                        h_internal_corner_type_map_or_position[
+                        h_internal_corner_type_map_or_position[ \
                             h_internal_corner_type]
                 if v_internal_corner_type_map_or_position is Vector2:
                     _set_inner_tile_shapes_for_quadrants_recursively(
