@@ -19,7 +19,7 @@ func get_quadrants(
     
     var proximity := CellProximity.new(
             tilemap,
-            tile.tile_set,
+            tile,
             cell_position,
             tile_id)
     var target_corners := CellCorners.new(proximity)

@@ -193,8 +193,9 @@ func set_cellv(
         transpose := false,
         autotile_coord := Vector2.ZERO) -> void:
     var previous_tile_id := get_cellv(position)
+    # FIXME: --------- Update to v3.5.
     .set_cellv(position, tile_id, flip_x, flip_y, transpose)
-#    .set_cellv(position, tile_id, flip_x, flip_y, transpose, autotile_coord)
+    # .set_cellv(position, tile_id, flip_x, flip_y, transpose, autotile_coord)
     if previous_tile_id != tile_id:
         _on_cell_tile_changed(
                 position,

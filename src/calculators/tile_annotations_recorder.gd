@@ -50,8 +50,7 @@ func decode_tile_corner_type_annotations(encoding):
     if encoding is Dictionary:
         var value := {}
         for key in encoding:
-            value[int(key)] = \
-                    decode_tile_corner_type_annotations(encoding[key])
+            value[int(key)] = decode_tile_corner_type_annotations(encoding[key])
         return value
     else:
         return Sc.json.decode_vector2(encoding)

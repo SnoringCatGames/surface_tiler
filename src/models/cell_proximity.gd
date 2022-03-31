@@ -18,7 +18,7 @@ const ALL_SIDES_BITMASK := \
         TileSet.BIND_BOTTOM
 
 var tile_map: TileMap
-var tile_set: TileSet
+var tile: CornerMatchTile
 
 var position: Vector2
 var tile_id: int
@@ -54,11 +54,11 @@ var is_bottom_right_empty: bool setget ,_get_is_bottom_right_empty
 
 func _init(
         tile_map: TileMap,
-        tile_set: TileSet,
+        tile: CornerMatchTile,
         position: Vector2,
         tile_id := TileMap.INVALID_CELL) -> void:
     self.tile_map = tile_map
-    self.tile_set = tile_set
+    self.tile = tile
     self.position = position
     self.tile_id = \
             tile_id if \
@@ -147,28 +147,28 @@ func get_angle_type(relative_x := 0, relative_y := 0) -> int:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return tile_set.tile_get_angle_type(neighbor_id)
+    return tile.tile_get_angle_type(neighbor_id)
 
 
 func get_is_present(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return tile_set._is_tile_bound(tile_id, neighbor_id)
+    return tile.tile_set._is_tile_bound(tile_id, neighbor_id)
 
 
 func get_is_empty(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return !tile_set._is_tile_bound(tile_id, neighbor_id)
+    return !tile.tile_set._is_tile_bound(tile_id, neighbor_id)
 
 
 func get_is_a_corner_match_subtile(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return tile_set.get_is_a_corner_match_subtile(neighbor_id)
+    return tile.get_is_a_corner_match_tile(neighbor_id)
 
 
 func _get_is_angle_type_90() -> bool:
