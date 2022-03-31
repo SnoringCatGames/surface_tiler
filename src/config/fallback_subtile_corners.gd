@@ -16,7 +16,7 @@ extends Reference
 ##     - If omitted, then 0.0 will be used.
 
 
-# FIXME: LEFT OFF HERE: -----------------------------------------
+# FIXME: LEFT OFF HERE: ------------------------------------------
 # - Should this be configurable by the tile_set author?
 # - Would there be a simpler way to allow the tile-set author to configure which
 #   slopes are allowed to transition into which others?

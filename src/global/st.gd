@@ -168,7 +168,8 @@ func _parse_manifest() -> void:
         assert(tileset_config.tile_set is CornerMatchTileset)
         assert(Sc.utils.is_num(tileset_config.quadrant_size))
         tileset_config.tile_set._config = tileset_config
-        tileset_config.tile_set.subtile_size = tileset_config.quadrant_size
+        tileset_config.tile_set.subtile_size = \
+                tileset_config.quadrant_size * Vector2.ONE * 2.0
 
         for tile_config in tileset_config.corner_match_tiles:
             assert(tile_config.outer_autotile_name is String)

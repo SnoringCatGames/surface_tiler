@@ -2,7 +2,7 @@ class_name SubtileCornerToDepth
 extends Reference
 
 
-# FIXME: LEFT OFF HERE: ------------- Remove all of the obsolete depth-based stuff?
+# FIXME: LEFT OFF HERE: -------------- Remove all of the obsolete depth-based stuff?
 
 
 const CORNERS_TO_DEPTHS := {
