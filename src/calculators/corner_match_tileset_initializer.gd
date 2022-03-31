@@ -6,8 +6,8 @@ extends Node
 func initialize_tileset(
         tile_set: CornerMatchTileset,
         forces_recalculate := false) -> void:
-    for tile in tile_set.corner_match_tiles.values():
-        _initialize_tile(tile, forces_recalculate)
+    for tile_config in tile_set._config.corner_match_tiles:
+        _initialize_tile(tile_config.tile, forces_recalculate)
     tile_set.is_initialized = true
 
 
@@ -59,6 +59,7 @@ func _initialize_tile(
             collision_shapes,
             occlusion_shapes)
     
+    tile._config.outer_tile_ids = []
     _initialize_outer_tile(
             tile,
             CellAngleType.A90)
@@ -129,14 +130,17 @@ func _initialize_inner_tile(
     else:
         tile_id = tile.tile_set.get_last_unused_tile_id()
     tile.tile_set.create_tile(tile_id)
+    tile._config.inner_tile_id = tile_id
     tile.inner_tile_id = tile_id
     tile.inner_tile_name = tile_name
+    tile.tile_set.ids_to_corner_match_tiles[tile_id] = tile
     
     var quadrants_texture_size: Vector2 = \
             tile._config.tileset_quadrants_texture.get_size()
     var tile_region := Rect2(Vector2.ZERO, quadrants_texture_size)
     
-    var subtile_size: Vector2 = Vector2.ONE * tile.tile_set._config.quadrant_size
+    var subtile_size: Vector2 = \
+            Vector2.ONE * tile.tile_set._config.quadrant_size
     
     tile.tile_set.tile_set_name(tile_id, tile_name)
     tile.tile_set.tile_set_texture(tile_id, \
@@ -144,7 +148,8 @@ func _initialize_inner_tile(
     tile.tile_set.tile_set_region(tile_id, tile_region)
     tile.tile_set.tile_set_tile_mode(tile_id, TileSet.AUTO_TILE)
     tile.tile_set.autotile_set_size(tile_id, subtile_size)
-    tile.tile_set.autotile_set_bitmask_mode(tile_id, TileSet.BITMASK_3X3_MINIMAL)
+    tile.tile_set.autotile_set_bitmask_mode(
+            tile_id, TileSet.BITMASK_3X3_MINIMAL)
     
     _set_inner_tile_shapes_for_quadrants(
             tile,
@@ -177,17 +182,18 @@ func _initialize_outer_tile(
             tile._config.outer_autotile_name + \
             tile_name_suffix
     
-    tile.id = tile.tile_set.find_tile_by_name(tile_name)
-    if tile.id >= 0:
+    var tile_id := tile.tile_set.find_tile_by_name(tile_name)
+    if tile_id >= 0:
         # Clear any pre-existing state for this tile.
-        tile.tile_set.remove_tile(tile.id)
+        tile.tile_set.remove_tile(tile_id)
     else:
-        tile.id = tile.tile_set.get_last_unused_tile_id()
-    tile.tile_set.create_tile(tile.id)
-    tileset_config.tile_set.corner_match_tiles[tile.id] = tile
+        tile_id = tile.tile_set.get_last_unused_tile_id()
+    tile.tile_set.create_tile(tile_id)
+    tile._config.outer_tile_ids.push_back(tile_id)
+    tile.tile_set.ids_to_corner_match_tiles[tile_id] = tile
     
-    tile._tile_id_to_angle_type[tile.id] = angle_type
-    tile._angle_type_to_tile_id[angle_type] = tile.id
+    tile._tile_id_to_angle_type[tile_id] = angle_type
+    tile._angle_type_to_tile_id[angle_type] = tile_id
     
     var empty_texture: Texture = load(Sc.images.TRANSPARENT_PIXEL_PATH)
     var empty_texture_size: Vector2 = empty_texture.get_size()
@@ -201,15 +207,15 @@ func _initialize_outer_tile(
     var subtile_size: Vector2 = \
             Vector2.ONE * tile.tile_set._config.quadrant_size * 2
     
-    tile.tile_set.tile_set_name(tile.id, tile_name)
-    tile.tile_set.tile_set_texture(tile.id, empty_texture)
-    tile.tile_set.tile_set_region(tile.id, tile_region)
-    tile.tile_set.tile_set_tile_mode(tile.id, TileSet.AUTO_TILE)
-    tile.tile_set.autotile_set_size(tile.id, subtile_size)
+    tile.tile_set.tile_set_name(tile_id, tile_name)
+    tile.tile_set.tile_set_texture(tile_id, empty_texture)
+    tile.tile_set.tile_set_region(tile_id, tile_region)
+    tile.tile_set.tile_set_tile_mode(tile_id, TileSet.AUTO_TILE)
+    tile.tile_set.autotile_set_size(tile_id, subtile_size)
     tile.tile_set.autotile_set_bitmask_mode(
-            tile.id, TileSet.BITMASK_3X3_MINIMAL)
+            tile_id, TileSet.BITMASK_3X3_MINIMAL)
     
-    _set_outer_tile_icon_coordinates(tile, tile.id)
+    _set_outer_tile_icon_coordinates(tile, tile_id)
 
 
 func _set_outer_tile_icon_coordinates(
@@ -244,9 +250,11 @@ func _set_inner_tile_shapes_for_quadrants(
                         collision_shapes,
                         occlusion_shapes)
                 continue
-            for h_internal_corner_type in h_internal_corner_type_map_or_position:
+            for h_internal_corner_type in \
+                    h_internal_corner_type_map_or_position:
                 var v_internal_corner_type_map_or_position = \
-                        h_internal_corner_type_map_or_position[h_internal_corner_type]
+                        h_internal_corner_type_map_or_position[
+                            h_internal_corner_type]
                 if v_internal_corner_type_map_or_position is Vector2:
                     _set_inner_tile_shapes_for_quadrants_recursively(
                             tile,
@@ -259,7 +267,8 @@ func _set_inner_tile_shapes_for_quadrants(
                             collision_shapes,
                             occlusion_shapes)
                     continue
-                for v_internal_corner_type in v_internal_corner_type_map_or_position:
+                for v_internal_corner_type in \
+                        v_internal_corner_type_map_or_position:
                     _set_inner_tile_shapes_for_quadrants_recursively(
                             tile,
                             tile_id,

@@ -6,7 +6,7 @@ extends TileSet
 var _config: Dictionary
 
 # Dictionary<int, CornerMatchTile>
-var corner_match_tiles := {}
+var ids_to_corner_match_tiles := {}
 
 var is_initialized := false
 

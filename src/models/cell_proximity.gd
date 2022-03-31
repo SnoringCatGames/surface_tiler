@@ -18,9 +18,10 @@ const ALL_SIDES_BITMASK := \
         TileSet.BIND_BOTTOM
 
 var tile_map: TileMap
-var tile
+var tile_set: TileSet
 
 var position: Vector2
+var tile_id: int
 var angle_type: int
 var bitmask: int
 
@@ -53,11 +54,16 @@ var is_bottom_right_empty: bool setget ,_get_is_bottom_right_empty
 
 func _init(
         tile_map: TileMap,
-        tile,
-        position: Vector2) -> void:
+        tile_set: TileSet,
+        position: Vector2,
+        tile_id := TileMap.INVALID_CELL) -> void:
     self.tile_map = tile_map
-    self.tile = tile
+    self.tile_set = tile_set
     self.position = position
+    self.tile_id = \
+            tile_id if \
+            tile_id != TileMap.INVALID_CELL else \
+            tile_map.get_cellv(position)
     self.bitmask = get_cell_actual_bitmask(position, tile_map)
     self.angle_type = get_angle_type(0,0)
 
@@ -141,28 +147,28 @@ func get_angle_type(relative_x := 0, relative_y := 0) -> int:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return tile.tile_get_angle_type(neighbor_id)
+    return tile_set.tile_get_angle_type(neighbor_id)
 
 
 func get_is_present(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return tile._is_tile_bound(tile.id, neighbor_id)
+    return tile_set._is_tile_bound(tile_id, neighbor_id)
 
 
 func get_is_empty(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return !tile._is_tile_bound(tile.id, neighbor_id)
+    return !tile_set._is_tile_bound(tile_id, neighbor_id)
 
 
 func get_is_a_corner_match_subtile(relative_x := 0, relative_y := 0) -> bool:
     var neighbor_id := tile_map.get_cell(
             position.x + relative_x,
             position.y + relative_y)
-    return tile.get_is_a_corner_match_tile(neighbor_id)
+    return tile_set.get_is_a_corner_match_subtile(neighbor_id)
 
 
 func _get_is_angle_type_90() -> bool:

@@ -39,7 +39,7 @@ func _init(proximity: CellProximity) -> void:
     if proximity.get_is_present(0, -1):
         var top_proximity := CellProximity.new(
                 proximity.tile_map,
-                proximity.tile,
+                proximity.tile_set,
                 proximity.position + Vector2(0, -1))
         self.external_tl_t = \
                 St.corner_calculator \
@@ -62,7 +62,7 @@ func _init(proximity: CellProximity) -> void:
     if proximity.get_is_present(0, 1):
         var bottom_proximity := CellProximity.new(
                 proximity.tile_map,
-                proximity.tile,
+                proximity.tile_set,
                 proximity.position + Vector2(0, 1))
         self.external_bl_b = \
                 St.corner_calculator \
@@ -85,7 +85,7 @@ func _init(proximity: CellProximity) -> void:
     if proximity.get_is_present(-1, 0):
         var left_proximity := CellProximity.new(
                 proximity.tile_map,
-                proximity.tile,
+                proximity.tile_set,
                 proximity.position + Vector2(-1, 0))
         self.external_tl_l = \
                 St.corner_calculator \
@@ -108,7 +108,7 @@ func _init(proximity: CellProximity) -> void:
     if proximity.get_is_present(1, 0):
         var right_proximity := CellProximity.new(
                 proximity.tile_map,
-                proximity.tile,
+                proximity.tile_set,
                 proximity.position + Vector2(1, 0))
         self.external_tr_r = \
                 St.corner_calculator \

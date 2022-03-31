@@ -35,6 +35,8 @@ export var logs_autotiling_errors := true \
 
 var inner_tilemap: CornerMatchInnerTilemap
 
+export var id: String
+
 
 func _ready() -> void:
     if !is_instance_valid(tile_set) or \
@@ -49,21 +51,24 @@ func _ready() -> void:
     if !tile_set.is_initialized:
         St.initializer.initialize_tileset(tile_set)
     
-    var children := Sc.utils.get_children_by_type(self, CornerMatchInnerTilemap)
-    if children.empty():
-        inner_tilemap = CornerMatchInnerTilemap.new()
-        inner_tilemap.name = "InnerTilemap"
-        add_child(inner_tilemap)
-        var ancestor := Sc.utils.get_ancestor_by_type(self, ScaffolderLevel)
-        inner_tilemap.owner = ancestor
-    else:
-        inner_tilemap = children[0]
-    inner_tilemap.tile_set = tile_set
-    
     self.cell_size = tile_set.subtile_size
-    inner_tilemap.cell_size = tile_set.subtile_size / 2.0
-    
     assert(cell_size == Sc.level_session.config.cell_size)
+    
+    var children := Sc.utils.get_children_by_type(self, CornerMatchInnerTilemap)
+    if get_has_corner_match_tiles():
+        if children.empty():
+            inner_tilemap = CornerMatchInnerTilemap.new()
+            inner_tilemap.name = "InnerTilemap"
+            add_child(inner_tilemap)
+            var ancestor := Sc.utils.get_ancestor_by_type(self, ScaffolderLevel)
+            inner_tilemap.owner = ancestor
+        else:
+            inner_tilemap = children[0]
+        inner_tilemap.tile_set = tile_set
+        inner_tilemap.cell_size = tile_set.subtile_size / 2.0
+    else:
+        for child in children:
+            child.queue_free()
 
 
 func _enter_tree() -> void:
@@ -142,6 +147,10 @@ func _set_logs_autotiling_errors(value: bool) -> void:
     update()
 
 
+func get_has_corner_match_tiles() -> bool:
+    return !tile_set.ids_to_corner_match_tiles.empty()
+
+
 func set_cell(
         x: int,
         y: int,
@@ -214,10 +223,11 @@ func _on_cell_tile_changed(
     # FIXME: --------------
     # - Trigger debug printing somewhere else (probably through a
     #   click-to-inspect mode that's toggled through the plugin UI).
-    if tile_set.corner_match_tiles.has(tile_id):
+    if tile_set.ids_to_corner_match_tiles.has(tile_id):
         St.quadrant_calculator.get_quadrants(
                 cell_position,
-                tile_set.corner_match_tiles[tile_id],
+                tile_id,
+                tile_set.ids_to_corner_match_tiles[tile_id],
                 self,
                 logs_autotiling_state_for_selected_tile,
                 logs_autotiling_errors)
@@ -232,12 +242,13 @@ func _on_cell_tile_changed(
 func _delegate_quadrant_updates(
         cell_position: Vector2,
         tile_id: int) -> void:
-    if !tile_set.corner_match_tiles.has(tile_id):
+    if !tile_set.ids_to_corner_match_tiles.has(tile_id):
         return
     
-    var tile: CornerMatchTile = tile_set.corner_match_tiles[tile_id]
+    var tile: CornerMatchTile = tile_set.ids_to_corner_match_tiles[tile_id]
     var quadrants: Array = St.quadrant_calculator.get_quadrants(
             cell_position,
+            tile_id,
             tile,
             self,
             false,

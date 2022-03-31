@@ -8,6 +8,7 @@ const _QUADRANT_DEBUG_RESULTS_COUNT := 14
 
 func get_quadrants(
         cell_position: Vector2,
+        tile_id: int,
         tile: CornerMatchTile,
         tilemap: CornerMatchTilemap,
         logs_debug_info := false,
@@ -18,8 +19,9 @@ func get_quadrants(
     
     var proximity := CellProximity.new(
             tilemap,
-            tile,
-            cell_position)
+            tile.tile_set,
+            cell_position,
+            tile_id)
     var target_corners := CellCorners.new(proximity)
     
     if !target_corners.get_are_corners_valid() and \

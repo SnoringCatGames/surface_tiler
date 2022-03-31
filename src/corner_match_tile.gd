@@ -40,8 +40,6 @@ var tile_set: TileSet
 
 var _config: Dictionary
 
-var id: int
-
 var is_initialized := false
 
 var are_45_degree_subtiles_used: bool
