@@ -675,7 +675,9 @@ static func _record_quadrant_coordinates_recursively(
     var current_key = keys[index]
     var next_key_or_value = keys[index + 1]
     
-    assert(current_key is int)
+    assert(current_key is int or current_key is float)
+    # JSON encoding may have converted this into a float.
+    current_key = int(current_key)
     assert(index < keys.size() - 2 or \
             next_key_or_value is Vector2)
     
