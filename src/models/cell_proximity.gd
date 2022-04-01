@@ -355,7 +355,8 @@ func get_is_90_floor(
             # least one of the two front corners are empty.
             if get_is_present(relative_x - 1, relative_y) and \
                     get_is_present(relative_x + 1, relative_y) and \
-                    (get_is_empty(relative_x - 1, relative_y - 1) or \
+                    (!St.includes_intra_subtile_45_concave_cusps or \
+                    get_is_empty(relative_x - 1, relative_y - 1) or \
                     get_is_empty(relative_x + 1, relative_y - 1)):
                 return true
             # A 45-degree cap has a 90-degree surface if only one diagonal
@@ -398,7 +399,8 @@ func get_is_90_ceiling(
             # least one of the two front corners are empty.
             if get_is_present(relative_x - 1, relative_y) and \
                     get_is_present(relative_x + 1, relative_y) and \
-                    (get_is_empty(relative_x - 1, relative_y + 1) or \
+                    (!St.includes_intra_subtile_45_concave_cusps or \
+                    get_is_empty(relative_x - 1, relative_y + 1) or \
                     get_is_empty(relative_x + 1, relative_y + 1)):
                 return true
             # A 45-degree cap has a 90-degree surface if only one diagonal
@@ -437,7 +439,8 @@ func get_is_90_left_wall(
             # least one of the two front corners are empty.
             if get_is_present(relative_x, relative_y - 1) and \
                     get_is_present(relative_x, relative_y + 1) and \
-                    (get_is_empty(relative_x + 1, relative_y - 1) or \
+                    (!St.includes_intra_subtile_45_concave_cusps or \
+                    get_is_empty(relative_x + 1, relative_y - 1) or \
                     get_is_empty(relative_x + 1, relative_y + 1)):
                 return true
             # A 45-degree cap has a 90-degree surface if only one diagonal
@@ -567,7 +570,8 @@ func get_is_90_right_wall(
             # least one of the two front corners are empty.
             if get_is_present(relative_x, relative_y - 1) and \
                     get_is_present(relative_x, relative_y + 1) and \
-                    (get_is_empty(relative_x - 1, relative_y - 1) or \
+                    (!St.includes_intra_subtile_45_concave_cusps or \
+                    get_is_empty(relative_x - 1, relative_y - 1) or \
                     get_is_empty(relative_x - 1, relative_y + 1)):
                 return true
             # A 45-degree cap has a 90-degree surface if only one diagonal
@@ -633,7 +637,8 @@ func get_is_45_pos_floor(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x, relative_y - 1) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x, relative_y - 1) and \
                 get_is_present(relative_x + 1, relative_y) and \
                 get_is_present(relative_x - 1, relative_y - 1) and \
                 get_is_present(relative_x + 1, relative_y - 1):
@@ -644,7 +649,8 @@ func get_is_45_pos_floor(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x - 1, relative_y) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x - 1, relative_y) and \
                 get_is_present(relative_x, relative_y + 1) and \
                 get_is_present(relative_x - 1, relative_y - 1) and \
                 get_is_present(relative_x - 1, relative_y + 1):
@@ -689,7 +695,8 @@ func get_is_45_neg_floor(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x, relative_y - 1) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x, relative_y - 1) and \
                 get_is_present(relative_x - 1, relative_y) and \
                 get_is_present(relative_x + 1, relative_y - 1) and \
                 get_is_present(relative_x - 1, relative_y - 1):
@@ -700,7 +707,8 @@ func get_is_45_neg_floor(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x + 1, relative_y) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x + 1, relative_y) and \
                 get_is_present(relative_x, relative_y + 1) and \
                 get_is_present(relative_x + 1, relative_y - 1) and \
                 get_is_present(relative_x + 1, relative_y + 1):
@@ -745,7 +753,8 @@ func get_is_45_pos_ceiling(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x, relative_y + 1) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x, relative_y + 1) and \
                 get_is_present(relative_x - 1, relative_y) and \
                 get_is_present(relative_x - 1, relative_y + 1) and \
                 get_is_present(relative_x + 1, relative_y + 1):
@@ -756,7 +765,8 @@ func get_is_45_pos_ceiling(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x + 1, relative_y) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x + 1, relative_y) and \
                 get_is_present(relative_x, relative_y - 1) and \
                 get_is_present(relative_x + 1, relative_y - 1) and \
                 get_is_present(relative_x + 1, relative_y + 1):
@@ -805,7 +815,8 @@ func get_is_45_neg_ceiling(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x, relative_y + 1) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x, relative_y + 1) and \
                 get_is_present(relative_x + 1, relative_y) and \
                 get_is_present(relative_x - 1, relative_y + 1) and \
                 get_is_present(relative_x + 1, relative_y + 1):
@@ -816,7 +827,8 @@ func get_is_45_neg_ceiling(relative_x := 0, relative_y := 0) -> bool:
         #     between 45-degree surfaces.
         # -   A45s become A90s when there are neighbors on either side and at
         #     least one of the two front corners are empty.
-        if get_is_empty(relative_x - 1, relative_y) and \
+        if St.includes_intra_subtile_45_concave_cusps and \
+                get_is_empty(relative_x - 1, relative_y) and \
                 get_is_present(relative_x, relative_y - 1) and \
                 get_is_present(relative_x - 1, relative_y - 1) and \
                 get_is_present(relative_x - 1, relative_y + 1):
@@ -887,28 +899,32 @@ func get_is_straight_45_neg_ceiling(relative_x := 0, relative_y := 0) -> bool:
 
 
 func get_is_45_concave_cusp_at_top(relative_x := 0, relative_y := 0) -> bool:
-    return get_is_present(relative_x - 1, relative_y) and \
+    return St.includes_intra_subtile_45_concave_cusps and \
+            get_is_present(relative_x - 1, relative_y) and \
             get_is_present(relative_x + 1, relative_y) and \
             get_is_45_neg_floor(relative_x, relative_y) and \
             get_is_45_pos_floor(relative_x, relative_y)
 
 
 func get_is_45_concave_cusp_at_bottom(relative_x := 0, relative_y := 0) -> bool:
-    return get_is_present(relative_x - 1, relative_y) and \
+    return St.includes_intra_subtile_45_concave_cusps and \
+            get_is_present(relative_x - 1, relative_y) and \
             get_is_present(relative_x + 1, relative_y) and \
             get_is_45_pos_ceiling(relative_x, relative_y) and \
             get_is_45_neg_ceiling(relative_x, relative_y)
 
 
 func get_is_45_concave_cusp_at_left(relative_x := 0, relative_y := 0) -> bool:
-    return get_is_present(relative_x, 1 - relative_y) and \
+    return St.includes_intra_subtile_45_concave_cusps and \
+            get_is_present(relative_x, 1 - relative_y) and \
             get_is_present(relative_x, 1 + relative_y) and \
             get_is_45_neg_ceiling(relative_x, relative_y) and \
             get_is_45_pos_floor(relative_x, relative_y)
 
 
 func get_is_45_concave_cusp_at_right(relative_x := 0, relative_y := 0) -> bool:
-    return get_is_present(relative_x, 1 - relative_y) and \
+    return St.includes_intra_subtile_45_concave_cusps and \
+            get_is_present(relative_x, 1 - relative_y) and \
             get_is_present(relative_x, 1 + relative_y) and \
             get_is_45_pos_ceiling(relative_x, relative_y) and \
             get_is_45_neg_floor(relative_x, relative_y)

@@ -28,6 +28,7 @@ var _properties := {
     forces_convex_collision_shapes = true,
     allows_fallback_corner_matches = true,
     supports_runtime_autotiling = true,
+    includes_intra_subtile_45_concave_cusps = true,
     
     corner_type_annotation_key_path = \
         "res://addons/surface_tiler/assets/images/corner_type_annotation_key.png",

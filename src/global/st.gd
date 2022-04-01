@@ -100,6 +100,8 @@ var allows_fallback_corner_matches: bool
 #     runtime, and will only happen when editing within the scene editor.
 var supports_runtime_autotiling: bool
 
+var includes_intra_subtile_45_concave_cusps: bool
+
 var corner_type_annotation_key_path: String
 
 var implicit_quadrant_connection_color: Color
@@ -156,6 +158,9 @@ func _parse_manifest() -> void:
     self.allows_fallback_corner_matches = \
             manifest.allows_fallback_corner_matches
     self.supports_runtime_autotiling = manifest.supports_runtime_autotiling
+    
+    self.includes_intra_subtile_45_concave_cusps = \
+            manifest.includes_intra_subtile_45_concave_cusps
     
     self.corner_type_annotation_key_path = \
             manifest.corner_type_annotation_key_path
