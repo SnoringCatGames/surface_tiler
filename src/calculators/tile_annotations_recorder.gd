@@ -8,7 +8,7 @@ func load_corner_type_annotation_key(
     var encoding_path := _get_json_path(corner_type_annotation_key_path)
     return Sc.json.load_file(
             encoding_path,
-            false,
+            true,
             true)
 
 
@@ -19,7 +19,7 @@ func save_corner_type_annotation_key(
     Sc.json.save_file(
             key,
             encoding_path,
-            false,
+            true,
             false)
 
 
@@ -28,7 +28,7 @@ func load_tile_corner_type_annotations(
     var encoding_path := _get_json_path(tile_corner_type_annotations_path)
     var encoding: Dictionary = Sc.json.load_file(
             encoding_path,
-            false,
+            true,
             true)
     return decode_tile_corner_type_annotations(encoding)
 
@@ -42,7 +42,7 @@ func save_tile_corner_type_annotations(
     Sc.json.save_file(
             encoding,
             encoding_path,
-            false,
+            true,
             false)
 
 
