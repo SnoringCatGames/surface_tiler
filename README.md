@@ -1,12 +1,13 @@
 # Surface Tiler
 
-<!-- FIXME: Add a package icon. -->
+<p align="center">
+  <img src="assets/images/surface_tiler_icon_128.png"
+       alt="The Surface Tiler icon.">
+</p>
 
 > _**[Live demo](https://snoringcat.games/play/squirrel-away) ([source code](https://github.com/snoringcatgames/squirrel_away))**_
 > 
 > _**[Godot Asset Library](https://godotengine.org/asset-library/asset/FIXME)**_
-
-_(FIXME: description) a library for [Godot](https://godotengine.org/)._
 
 _Next-level autotiling._
 
@@ -34,7 +35,9 @@ FIXME: Add documentation.
     -   [addons/scaffolder/src/config/scaffolder_third_party_licenses.gd](https://github.com/SnoringCatGames/scaffolder/blob/master/src/config/scaffolder_third_party_licenses.gd)
     -   [addons/surface_tiler/src/global/surface_tiler_third_party_licenses.gd](https://github.com/SnoringCatGames/surface_tiler/blob/master/src/global/surface_tiler_third_party_licenses.gd)
 
-
-<!-- FIXME: Add a package icon. -->
+<p align="center">
+  <img src="assets/images/surface_tiler_icon_128.png"
+       alt="The Surface Tiler icon.">
+</p>
 
 FIXME: LEFT OFF HERE: ------- Add README content.
