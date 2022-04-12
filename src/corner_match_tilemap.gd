@@ -53,7 +53,7 @@ func _ready() -> void:
         St.initializer.initialize_tileset(tile_set)
     
     self.cell_size = tile_set.subtile_size
-    assert(cell_size == Sc.level_session.config.cell_size)
+    assert(cell_size == Sc.levels.session.config.cell_size)
     
     var children := Sc.utils.get_children_by_type(self, CornerMatchInnerTilemap)
     if get_has_corner_match_tiles():
