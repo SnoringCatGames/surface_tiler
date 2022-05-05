@@ -67,6 +67,11 @@ func _ready() -> void:
             inner_tilemap = children[0]
         inner_tilemap.tile_set = tile_set
         inner_tilemap.cell_size = tile_set.subtile_size / 2.0
+        
+        inner_tilemap.collision_layer = self.collision_layer
+        inner_tilemap.collision_mask = self.collision_mask
+        inner_tilemap.light_mask = self.light_mask
+        inner_tilemap.occluder_light_mask = self.occluder_light_mask
     else:
         for child in children:
             child.queue_free()
