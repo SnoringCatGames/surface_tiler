@@ -5,9 +5,11 @@
        alt="The Surface Tiler icon.">
 </p>
 
+<!--
 > _**[Live demo](https://snoringcat.games/play/squirrel-away) ([source code](https://github.com/snoringcatgames/squirrel_away))**_
 > 
 > _**[Godot Asset Library](https://godotengine.org/asset-library/asset/FIXME)**_
+-->
 
 _Next-level autotiling._
 
@@ -25,7 +27,9 @@ Some features include:
 
 <!-- FIXME: Add a GIF showing the autotiling in action! -->
 
-FIXME: Add documentation.
+<!-- FIXME: Add documentation. -->
+
+[This devlog post](https://devlog.levi.dev/2022/03/week-61-illustrated-explanation-of-my.html) describes some of how this auto-tiling works.
 
 ## 📃 Licenses
 
@@ -40,4 +44,4 @@ FIXME: Add documentation.
        alt="The Surface Tiler icon.">
 </p>
 
-FIXME: LEFT OFF HERE: ------- Add README content.
+<!-- FIXME: LEFT OFF HERE: ------- Add README content. -->
